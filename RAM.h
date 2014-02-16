@@ -7,8 +7,10 @@ class RAM
 {
 private:
 		// Atributos
-	vector<string> I_;							/* Estructura que almacena las instrucciones del programa RAM codificadas*/
-	index m_;									/* Número de filas.   */
+	vector<string> I_;							/* Programa a cargar en la Máquina RAM */
+	vector<string> CE_;							/* Cinta de Entrada */
+	vector<string> CS_;							/* Cinta de Salida */
+	index m_;									/* Número de filas. */
 	index n_;									/* Número de columnas.*/
 		//Métodos
 	index position(index m, index n);			/* Transforma los índices de matriz en vector */
@@ -23,10 +25,14 @@ public:
 	RAM();
 	RAM(index, index);
 		// Métodos: Obtener y Establecer
-	vector<string> get_I();						/* Devuelve el vector que almacena el código codificado. */
+	vector<string> get_I();						/* Devuelve el vector que almacena el código del programa codificado. */
+	string get_I(index, index);					/* Devuelve el valor de la matriz I en la posición (i, j). */
 	index get_m();								/* Devuelve el nº de filas. */
 	index get_n();								/* Devuelve el nº de columnas. */
-	string get_item(index, index);				/* Devuelve el valor de la matriz en la posición (i, j). */
+	vector<string> get_CE();					/* Devuelve el vector que almacena la cinta de entrada. */
+	string get_CE(index);						/* Devuelve el valor del vector CE en la posición (i, j). */
+	vector<string> get_CS();					/* Devuelve el vector que almacena la cinta de salida. */
+	string get_CS(index);						/* Devuelve el valor del vector CS en la posición (i, j). */
 	void set_m(index);							/* Establece el valor del nº de filas. */
 	void set_n(index);							/* Establece el valor del nº de columnas. */
 	void set_item(index, index, string);		/* Establece el valor de la matriz en la posición (i, j) por item. */

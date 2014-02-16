@@ -1,5 +1,7 @@
 #include "RAM.h"
 
+							// ************* MÉTODOS PRIVADOS
+
 //========================================================================================
 // DEVUELVE EL ÍNDICE DEL VECTOR CORRESPONDIENTE DE LA MATRIZ
 //========================================================================================
@@ -129,6 +131,8 @@ string RAM::desOpcode(string str) {
 	return out;
 }
 
+							// ************* CONSTRUCTORES
+
 //========================================================================================
 // CONSTRUCTOR POR DEFECTO
 // El nº de columnas será 2 ó 3, 1ª almacena comando, 2ª operando o etiqueta, 3ª comentario
@@ -150,13 +154,24 @@ n_(n)
 {
 }
 
+							// ************* MÉTODOS: GETs y SETs
+
 //========================================================================================
-// OBTENER LA DIMENSIÓN DE LA FILA
+// OBTENER EL PROGRAMA A CARGAR EN LA MÁQUINA DE RAM
 //========================================================================================
 
 vector<string> RAM::get_I()
 {
 	return I_;
+}
+
+//========================================================================================
+// OBTENER EL VALOR DE LA POSICIÓN i,j DE LA MATRIZ I_
+//========================================================================================
+
+string RAM::get_I(index i, index j)
+{
+	return I_[position(i, j)];
 }
 
 //========================================================================================
@@ -178,12 +193,39 @@ index RAM::get_n()
 }
 
 //========================================================================================
-// OBTENER EL VALOR DE LA POSICIÓN i,j DE LA MATRIZ
+// DEVUELVE LA CINTA DE ENTRADA
 //========================================================================================
 
-string RAM::get_item(index i, index j)
+vector<string> RAM::get_CE()
 {
-	return I_[position(i, j)];
+	return CE_;
+}
+
+//========================================================================================
+// DEVUELVE LA POSICIÓN I DE LA CINTA DE ENTRADA
+//========================================================================================
+
+string RAM::get_CE(index i)
+{
+	return CE_[i];
+}
+
+//========================================================================================
+// DEVUELVE LA CINTA DE SALIDA
+//========================================================================================
+
+vector<string> RAM::get_CS()
+{
+	return CS_;
+}
+
+//========================================================================================
+// DEVUELVE LA POSICIÓN I DE LA CINTA DE SALIDA
+//========================================================================================
+
+string RAM::get_CS(index i)
+{
+	return CS_[i];
 }
 
 //========================================================================================
@@ -280,7 +322,7 @@ istream& RAM::readFile(istream& file)
 
 	for (int i = 0; i < vTag.size() / 2; i++) {						// Se recorre el vector que almacena las etiquetas y su posición
 		for (int j = 0; j < get_m(); j++) {							// Se recorre el vector que almacena el opcode y su operando/etiqueta
-			if (vTag[2 * i + 1] == get_item(j, 1))					// Si coincide el nombre de la etiqueta con el etiqueta del opcode
+			if (vTag[2 * i + 1] == get_I(j, 1))					// Si coincide el nombre de la etiqueta con el etiqueta del opcode
 				set_item(j, 1, vTag[2 * i]);						// Se cambia por el nº de línea
 		}
 	}
@@ -296,7 +338,7 @@ void RAM::printCod() {
 	cout << "\t OPCODE \t OPERANDO/ETIQUETA \n";
 	cout << "       *******************************\n";
 	for (int i = 0; i < get_m(); i++) 
-		cout << "L" << i + 1 << "\t  " << get_item(i, 0) << "\t\t" << get_item(i, 1) << "\n";
+		cout << "L" << i + 1 << "\t  " << get_I(i, 0) << "\t\t" << get_I(i, 1) << "\n";
 }
 
 //========================================================================================
@@ -307,10 +349,10 @@ void RAM::printDesc() {
 	cout << "\t OPCODE \t OPERANDO/ETIQUETA \n";
 	cout << "       *******************************\n";
 	for (int i = 0; i < get_m(); i++)
-		if ((get_item(i, 0) == "9") || (get_item(i, 0) == "10") || (get_item(i, 0) == "11"))
-			cout << "L" << i+1 << "\t  " <<  desOpcode(get_item(i, 0)) << "\t\t\tL" << get_item(i, 1) << "\n";
+		if ((get_I(i, 0) == "9") || (get_I(i, 0) == "10") || (get_I(i, 0) == "11"))
+			cout << "L" << i + 1 << "\t  " << desOpcode(get_I(i, 0)) << "\t\t\tL" << get_I(i, 1) << "\n";
 		else
-			cout << "L" << i + 1 << "\t  " << desOpcode(get_item(i, 0)) << "\t\t\t" << get_item(i, 1) << "\n";
+			cout << "L" << i + 1 << "\t  " << desOpcode(get_I(i, 0)) << "\t\t\t" << get_I(i, 1) << "\n";
 }
 
 //========================================================================================
