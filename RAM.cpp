@@ -140,8 +140,19 @@ void RAM::STORE(string dir, string oper) {
 //========================================================================================
 
 void RAM::ADD(string dir, string oper) {
+	int aux = atoi(oper.c_str());
+	int aux2 = atoi(R_[aux].c_str());
+	int aux3 = atoi(R_[aux2].c_str());
+	int aux0 = atoi(R_[0].c_str());
 
-
+	if (dir == "")
+		R_[0] = to_string(aux0 + aux2);
+	else if (dir == "=")
+		R_[0] = to_string(aux0 + aux);
+	else if (dir == "*")
+		R_[0] = to_string(aux0 + aux3);
+	else
+		cout << "\t\t Error en el direccionamiento";
 }
 
 //========================================================================================
