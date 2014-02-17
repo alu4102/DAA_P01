@@ -36,19 +36,22 @@ void menu(void)
 			cout << "\n\n";
 			cout << "                                MENU " << endl;
 			cout << "    ***************************************************************" << endl;
-			cout << "\t 1) Cargar ficheros (por defecto está test2.ram). " << endl;
-			cout << "\t 2) Imprimir el c\242digo codificado. " << endl;
-			cout << "\t 3) Imprimir el c\242digo descodificado. " << endl;
-			cout << "\t 4) Imprimir el c\242digo original. " << endl;
-			cout << "\t 5) C\242digos de los OPCODE. " << endl;
+			cout << "\t l) Cargar ficheros (por defecto está test2.ram). " << endl;
 			cout << "" << endl;
 			cout << "\t r) Ver los registros. " << endl;
+			cout << "\t i) Ver Cinta de Entrada. " << endl;
+			cout << "\t o) Ver Cinta de Salida. " << endl;
+			cout << "\t u) Ver el c\242digo codificado. " << endl;
+			cout << "\t v) Ver el c\242digo descodificado. " << endl;
+			cout << "\t w) Ver el c\242digo original. " << endl;
+			cout << "\t c) Ver C\242digos de los OPCODE. " << endl;
+			cout << "" << endl;
 			cout << "\t t) Traza. " << endl;
 			cout << "\t g) Go. " << endl;
 			cout << "\t s) Desensamblador. " << endl;
-			cout << "\t i) Ver Cinta de Entrada. " << endl;
-			cout << "\t o) Ver Cinta de Salida. " << endl;
+			cout << "" << endl;
 			cout << "\t h) Ayuda. " << endl;
+			cout << "" << endl;
 			cout << "\t x) Salir. " << endl;
 			cout << "    ***************************************************************" << endl;
 			cout << "\t    Elige una opci\242n: ";
@@ -59,7 +62,7 @@ void menu(void)
 			switch (opcion)
 			{
 			// CARGAR FICHEROS
-			case '1': 
+			case 'l': 
 				cout << "\n\n\t\t Escriba los nombres de los archivos: \n";
 				cout << "\t\t Programa: \t\t";
 				cin >> fileP;
@@ -68,25 +71,27 @@ void menu(void)
 				cout << "\t\t Cinta de Salida: \t";
 				cin >> fileCS;
 				inP.open(fileP.c_str(), ifstream::in);			// Se carga el nuevo archivo para analizar su código
-				if (inP.is_open()) {
+				if (inP.is_open() && inCE.is_open()) {
 					A.read_P(inP);
+					A.read_CE(inCE);
 					inP.close();
+					inCE.close();
 					cout << "\n\n\t\t El archivo ha sido cargado con \202xito.";
 					cin.get();
 				} else {
-					cout << "\n\n\t\t Error al leer fichero uno de los ficheros."; 
+					cout << "\n\n\t\t Error al leer alguno de los ficheros."; 
 					cin.get();
 				}
 				break;
 			// IMPRIMIR CÓDIGO CODIFICADO
-			case '2':	A.print_P_Cod(); cin.get(); break;		// Se imprime el código codificado
+			case 'u':	A.print_P_Cod(); cin.get(); break;		// Se imprime el código codificado
 			// IMPRIMIR CÓDIGO DESCODIFICADO
-			case '3':	A.print_P_Desc(); cin.get(); break;	// Se imprime el código descodificado después de haber sido codificado
+			case 'v':	A.print_P_Desc(); cin.get(); break;	// Se imprime el código descodificado después de haber sido codificado
 			// IMPRIMIR CÓDIGO ORIGINAL
-			case '4':	 
+			case 'w':	 
 				inP.open(fileP.c_str(), ifstream::in);
 				if (inP.is_open()) {
-					while (getline(inP, line)) {							// Se recorre el archivo línea a línea
+					while (getline(inP, line)) {						// Se recorre el archivo línea a línea
 						cout << line << endl;							// Se imprime cada línea
 					}
 					inP.close();
@@ -96,27 +101,18 @@ void menu(void)
 				}
 				cin.get(); break;
 			// IMPRIME LOS CÓDIGOS DEL OPCODE CORRESPONDIENTE
-			case '5':	
-				cout << "\n\n\t\tOPCODE\tC\242DIGO\n";
-				cout << "\t      ******************\n";
-				cout << "\t\t LOAD\t   1\n";
-				cout << "\t\t STORE\t   2\n";
-				cout << "\t\t ADD\t   3\n";
-				cout << "\t\t SUB\t   4\n";
-				cout << "\t\t MULT\t   5\n";
-				cout << "\t\t DIV\t   6\n";
-				cout << "\t\t READ\t   7\n";
-				cout << "\t\t WRITE\t   8\n";
-				cout << "\t\t JUMP\t   9\n";
-				cout << "\t\t JGTZ\t  10\n";
-				cout << "\t\t JZERO\t  11\n";
-				cout << "\t\t HALT\t  12\n";
+			case 'c':	
+				A.print_OPCODE();
+				cin.get(); break;
+			// VER REGISTRO
+			case 'r':
+				A.print_R();
 				cin.get(); break;
 			// VER CINTA DE ENTRADA
 			case 'i':
 				A.print_CE();
 				cin.get(); break;
-				// VER CINTA DE ENTRADA
+			// VER CINTA DE ENTRADA
 			case 'o':
 				A.print_CS();
 				cin.get(); break;

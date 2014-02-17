@@ -240,6 +240,29 @@ string RAM::get_CS(index i)
 }
 
 //========================================================================================
+// DEVUELVE EL REGISTRO
+//========================================================================================
+
+vector<string> RAM::get_R()
+{
+	return CS_;
+}
+
+//========================================================================================
+// DEVUELVE LA POSICIÓN I DEL REGISTRO INDEXADO EN 0
+//========================================================================================
+
+string RAM::get_R(index i)
+{
+	if ((i<0) || (i>=CS_.size()))
+	{
+		cerr << "Error en los índices del vector." << endl;
+		return 0;
+	}
+	return R_[i];
+}
+
+//========================================================================================
 // ESTABLECE LA DIMENSIÓN DE LA FILA
 //========================================================================================
 
@@ -309,7 +332,7 @@ void RAM::set_CS(index i, string item)
 		cerr << "Error en los índices del vector." << endl;
 	}
 
-	CS_[i] = item;
+	CS_[i-1] = item;
 }
 
 //========================================================================================
@@ -319,6 +342,29 @@ void RAM::set_CS(index i, string item)
 void RAM::set_CS(string item)
 {
 	CS_.push_back(item);
+}
+
+//========================================================================================
+// ESTABLECER EL VALOR DE LA POSICIÓN i DEL VECTOR R INDEXADO DESDE 0
+//========================================================================================
+
+void RAM::set_R(index i, string item)
+{
+	if ((i<0) || (i>=CS_.size()))
+	{
+		cerr << "Error en los índices del vector." << endl;
+	}
+
+	R_[i] = item;
+}
+
+//========================================================================================
+// ESTABLECER EL VALOR EN LA ÚLTIMA POSICIÓN EN EL REGISTRO
+//========================================================================================
+
+void RAM::set_R(string item)
+{
+	R_.push_back(item);
 }
 
 //========================================================================================
@@ -470,6 +516,43 @@ void RAM::print_CS() {
 		cout << "\t\t Cinta de Salida Vacia" << endl;
 }
 
+//========================================================================================
+// IMPRIME LOS REGISTROS
+//========================================================================================
+
+void RAM::print_R() {
+	cout << "\n\n\t\t\tREGISTRO \n";
+	cout << "\t       ************************\n";
+	cout << "\t\t REGISTRO  \tVALOR \n";
+	cout << "\t       ************************\n";
+	for (int i = 0; i < get_R().size(); i++)
+		cout << "\t\t Registro" << i << "\t  " << get_R(i) << "\n";
+
+	if (get_R().size() == 0)
+		cout << "\t\t Registros Vacio" << endl;
+}
+
+//========================================================================================
+// IMPRIME LA CODIFICACIÓN DEL OPCODE
+//========================================================================================
+
+void RAM::print_OPCODE() {
+	cout << "\n\n\t\tOPCODE\tC\242DIGO\n";
+	cout << "\t      ******************\n";
+	cout << "\t\t LOAD\t   1\n";
+	cout << "\t\t STORE\t   2\n";
+	cout << "\t\t ADD\t   3\n";
+	cout << "\t\t SUB\t   4\n";
+	cout << "\t\t MULT\t   5\n";
+	cout << "\t\t DIV\t   6\n";
+	cout << "\t\t READ\t   7\n";
+	cout << "\t\t WRITE\t   8\n";
+	cout << "\t\t JUMP\t   9\n";
+	cout << "\t\t JGTZ\t  10\n";
+	cout << "\t\t JZERO\t  11\n";
+	cout << "\t\t HALT\t  12\n";
+}
+
 
 //========================================================================================
 // DESTRUCTOR
@@ -480,6 +563,7 @@ RAM::~RAM()
 	get_P().clear();
 	get_CE().clear();
 	get_CS().clear();
+	get_R().clear();
 	set_m(0);
 	set_n(0);
 }

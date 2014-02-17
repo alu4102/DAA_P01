@@ -10,6 +10,7 @@ private:
 	vector<string> P_;							/* Programa a cargar en la Máquina RAM */
 	vector<string> CE_;							/* Cinta de Entrada */
 	vector<string> CS_;							/* Cinta de Salida */
+	vector<string> R_;							/* Registros */
 	index m_;									/* Número de filas. */
 	index n_;									/* Número de columnas.*/
 		//Métodos
@@ -34,6 +35,8 @@ public:
 	string get_CE(index);						/* Devuelve el valor del vector CE en la posición (i, j). */
 	vector<string> get_CS();					/* Devuelve el vector que almacena la cinta de salida. */
 	string get_CS(index);						/* Devuelve el valor del vector CS en la posición (i, j). */
+	vector<string> get_R();						/* Devuelve el vector que almacena los registros. */
+	string get_R(index);						/* Devuelve el valor del Registro en la posición (i, j). */
 
 	void set_m(index);							/* Establece el valor del nº de filas. */
 	void set_n(index);							/* Establece el valor del nº de columnas. */
@@ -43,6 +46,10 @@ public:
 	void set_CE(string);						/* Establece al final del vector de la CE el valor item. */
 	void set_CS(index, string);					/* Establece el valor de la cinta de Salida de la posición i por el valor item. */
 	void set_CS(string);						/* Establece al final del vector de la CS el valor item. */
+	void set_R(index, string);					/* Establece el valor del registro de la posición i por el valor item. */
+	void set_R(string);							/* Establece al final del vector del registro el valor item. */
+
+		// Otros Métodos
 
 		// Métodos: E/S por fichero/consola
 	istream& read_P(istream& in);				/* Lee por fichero el programa a cargar en la Máquina RAM. */
@@ -51,6 +58,8 @@ public:
 	void print_P_Desc();						/* Imprime la estructura descodificada. */
 	void print_CE();							/* Imprime la cinta de entrada. */
 	void print_CS();							/* Imprime la cinta de entrada. */
+	void print_R();								/* Imprime los registros. */
+	void print_OPCODE();						/* Imprime la codificación del OPCODE*/
 
 		// Destructor
 	virtual ~RAM();
