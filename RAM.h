@@ -2,6 +2,7 @@
 #include "header.h"
 
 //enum type_opc { LOAD, STORE, ADD, SUB, MULT, DIV, READ, WRITE, JUMP, JGTZ, JZERO, HALT };
+enum Tcomment { SIN, CON };		/** Tipo de dato que almacenará si queremos comentario o no. */
 
 class RAM
 {
@@ -25,26 +26,27 @@ private:
 	string codOpcode(string);
 	string desOpcode(string);	
 		// Ejecución de los OPCODE
-	void LOAD(string dir, string oper);		/* dir = direccionamiento, oper = operando*/
-	void STORE(string dir, string oper);
-	void ADD(string dir, string oper);
-	void SUB(string dir, string oper);
-	void MULT(string dir, string oper);
-	void DIV(string dir, string oper);
-	void READ(string dir, string oper, index i);
-	void WRITE(string dir, string oper);
-	index JUMP(string tag, index i);
-	index JGTZ(string tag, index i);
-	index JZERO(string tag, index i);
-	void HALT();
+	void LOAD(string dir, string oper, Tcomment comment);			/* dir = direccionamiento, oper = operando*/
+	void STORE(string dir, string oper, Tcomment comment);
+	void ADD(string dir, string oper, Tcomment comment);
+	void SUB(string dir, string oper, Tcomment comment);
+	void MULT(string dir, string oper, Tcomment comment);
+	void DIV(string dir, string oper, Tcomment comment);
+	void READ(string dir, string oper, index i, Tcomment comment);
+	void WRITE(string dir, string oper, Tcomment comment);
+	index JUMP(string tag, index i, Tcomment comment);
+	index JGTZ(string tag, index i, Tcomment comment);
+	index JZERO(string tag, index i, Tcomment comment);
+	bool HALT(Tcomment comment);
 		// 
-	void ejecuta(index &i, index &j);								/*Línea i de P, y registro j de R*/
+	void addR(index);
+	bool ejecuta(index &i, index &j, Tcomment comment);				/*Línea i de P, y registro j de R*/
 	
 public:
 	// Cronstructores
 	RAM();
 	RAM(index, index);
-	void addR(index);
+	
 	// Métodos: Obtener y Establecer
 	vector<string> get_P() { return P_; };							/* Devuelve el vector que almacena el código del programa codificado. */
 	string get_P(index i, index j) { return P_[position(i, j)]; };	/* Devuelve el valor de la matriz I en la posición (i, j). */
@@ -71,6 +73,7 @@ public:
 
 		// Otros Métodos
 	void traza();
+	void go();
 		// Métodos: E/S por fichero/consola
 	istream& read_P(istream& in);				/* Lee por fichero el programa a cargar en la Máquina RAM. */
 	istream& read_CE(istream& in);				/* Lee por fichero la cinta de entrada. */

@@ -137,52 +137,50 @@ string RAM::desOpcode(string str) {
 // EJECUTA EL OPCODE LOAD
 //========================================================================================
 
-void RAM::LOAD(string dir, string oper) {
+void RAM::LOAD(string dir, string oper, Tcomment comment) {
 	int aux = atoi(oper.c_str());
 	
-	cout << "\n\tLOAD \t";
+	if (comment) cout << "\n\tLOAD \t";
 	if (dir == "") {
 		R_[0] = R_[aux];
-		cout << "R[0] = R[" << aux << "] = " << R_[0];
+		if (comment) cout << "R[0] = R[" << aux << "] = " << R_[0];
 	} else if (dir == "=") {
 		R_[0] = oper;
-		cout << "R[0] = operando = " << R_[0];
+		if (comment) cout << "R[0] = operando = " << R_[0];
 	} else if (dir == "*") {
 		addR(aux);
 		int aux2 = atoi(R_[aux].c_str());
 		R_[0] = R_[aux2];
-		cout << "R[0] = R[R[" << aux << "]] = R[" << R_[aux] << "] = " << R_[0];
-	} else
-		cout << "\t\t Error en el direccionamiento";
+		if (comment) cout << "R[0] = R[R[" << aux << "]] = R[" << R_[aux] << "] = " << R_[0];
+	}
 }
 
 //========================================================================================
 // EJECUTA EL OPCODE STORE
 //========================================================================================
 
-void RAM::STORE(string dir, string oper) {
+void RAM::STORE(string dir, string oper, Tcomment comment) {
 	int aux = atoi(oper.c_str());
 	
-	cout << "\n\tSTORE\t";
+	if (comment) cout << "\n\tSTORE\t";
 	if (dir == "") {
 		addR(aux);
 		R_[aux] = R_[0];
-		cout << "R[" << aux << "] = R[0] = " << R_[0];
+		if (comment) cout << "R[" << aux << "] = R[0] = " << R_[0];
 	} else if (dir == "*") {
 		addR(aux);
 		int aux2 = atoi(R_[aux].c_str());
 		addR(aux2);
 		R_[aux2] = R_[0];
-		cout << "R[R[" << aux << "]] = R[" << aux2 << "] = R[0] = " << R_[0];
-	} else
-		cout << "\t\t Error en el direccionamiento";
+		if (comment) cout << "R[R[" << aux << "]] = R[" << aux2 << "] = R[0] = " << R_[0];
+	}
 }
 
 //========================================================================================
 // EJECUTA EL OPCODE ADD
 //========================================================================================
 
-void RAM::ADD(string dir, string oper) {
+void RAM::ADD(string dir, string oper, Tcomment comment) {
 	int aux = atoi(oper.c_str());
 	addR(aux);
 	int aux2 = atoi(R_[aux].c_str());
@@ -190,25 +188,24 @@ void RAM::ADD(string dir, string oper) {
 	int aux3 = atoi(R_[aux2].c_str());
 	int aux0 = atoi(R_[0].c_str());
 
-	cout << "\n\tADD  \t";
+	if (comment) cout << "\n\tADD  \t";
 	if (dir == "") {
 		R_[0] = to_string(aux0 + aux2);
-		cout << "R[0] = R[0] + R[" << aux << "] = " << aux0 << " + " << aux2 << " = " << R_[0];
+		if (comment) cout << "R[0] = R[0] + R[" << aux << "] = " << aux0 << " + " << aux2 << " = " << R_[0];
 	} else if (dir == "="){
 		R_[0] = to_string(aux0 + aux);
-		cout << "R[0] = R[0] + operador = " << aux0 << " + " << aux << " = " << R_[0];
+		if (comment) cout << "R[0] = R[0] + operador = " << aux0 << " + " << aux << " = " << R_[0];
 	} else if (dir == "*"){
 		R_[0] = to_string(aux0 + aux3);
-		cout << "R[0] = R[0] + R[R[" << aux << "]] = R[0] + R[" << aux2 << "] = " << aux0 << " + " << aux3 << " = " << R_[0];
-	} else
-		cout << "\t\t Error en el direccionamiento";
+		if (comment) cout << "R[0] = R[0] + R[R[" << aux << "]] = R[0] + R[" << aux2 << "] = " << aux0 << " + " << aux3 << " = " << R_[0];
+	}
 }
 
 //========================================================================================
 // EJECUTA EL OPCODE SUB
 //========================================================================================
 
-void RAM::SUB(string dir, string oper) {
+void RAM::SUB(string dir, string oper, Tcomment comment) {
 	int aux = atoi(oper.c_str());
 	addR(aux);
 	int aux2 = atoi(R_[aux].c_str());
@@ -216,25 +213,24 @@ void RAM::SUB(string dir, string oper) {
 	int aux3 = atoi(R_[aux2].c_str());
 	int aux0 = atoi(R_[0].c_str());
 
-	cout << "\n\tSUB  \t";
+	if (comment) cout << "\n\tSUB  \t";
 	if (dir == "") {
 		R_[0] = to_string(aux0 - aux2);
-		cout << "R[0] = R[0] - R[" << aux << "] = " << aux0 << " - " << aux2 << " = " << R_[0];
+		if (comment) cout << "R[0] = R[0] - R[" << aux << "] = " << aux0 << " - " << aux2 << " = " << R_[0];
 	} else if (dir == "=") {
 		R_[0] = to_string(aux0 - aux);
-		cout << "R[0] = R[0] - operador = " << aux0 << " - " << aux << " = " << R_[0];
+		if (comment) cout << "R[0] = R[0] - operador = " << aux0 << " - " << aux << " = " << R_[0];
 	} else if (dir == "*") {
 		R_[0] = to_string(aux0 - aux3);
-		cout << "R[0] = R[0] - R[R[" << aux << "]] = R[0] - R[" << aux2 << "] = " << aux0 << " - " << aux3 << " = " << R_[0];
-	} else
-		cout << "\t\t Error en el direccionamiento";
+		if (comment) cout << "R[0] = R[0] - R[R[" << aux << "]] = R[0] - R[" << aux2 << "] = " << aux0 << " - " << aux3 << " = " << R_[0];
+	}
 }
 
 //========================================================================================
 // EJECUTA EL OPCODE MULT
 //========================================================================================
 
-void RAM::MULT(string dir, string oper) {
+void RAM::MULT(string dir, string oper, Tcomment comment) {
 	int aux = atoi(oper.c_str());
 	addR(aux);
 	int aux2 = atoi(R_[aux].c_str());
@@ -242,28 +238,24 @@ void RAM::MULT(string dir, string oper) {
 	int aux3 = atoi(R_[aux2].c_str());
 	int aux0 = atoi(R_[0].c_str());
 
-	cout << "\n\tMULT \t";
+	if (comment) cout << "\n\tMULT \t";
 	if (dir == "") {
 		R_[0] = to_string(aux0 * aux2);
-		cout << "R[0] = R[0] * R[" << aux << "] = " << aux0 << " * " << aux2 << " = " << R_[0];
-	}
-	else if (dir == "=") {
+		if (comment) cout << "R[0] = R[0] * R[" << aux << "] = " << aux0 << " * " << aux2 << " = " << R_[0];
+	} else if (dir == "=") {
 		R_[0] = to_string(aux0 * aux);
-		cout << "R[0] = R[0] * operador = " << aux0 << " * " << aux << " = " << R_[0];
-	}
-	else if (dir == "*") {
+		if (comment) cout << "R[0] = R[0] * operador = " << aux0 << " * " << aux << " = " << R_[0];
+	} else if (dir == "*") {
 		R_[0] = to_string(aux0 * aux3);
-		cout << "R[0] = R[0] * R[R[" << aux << "]] = R[0] * R[" << aux2 << "] = " << aux0 << " * " << aux3 << " = " << R_[0];
+		if (comment) cout << "R[0] = R[0] * R[R[" << aux << "]] = R[0] * R[" << aux2 << "] = " << aux0 << " * " << aux3 << " = " << R_[0];
 	}
-	else
-		cout << "\t\t Error en el direccionamiento";
 }
 
 //========================================================================================
 // EJECUTA EL OPCODE DIV
 //========================================================================================
 
-void RAM::DIV(string dir, string oper) {
+void RAM::DIV(string dir, string oper, Tcomment comment) {
 	int aux = atoi(oper.c_str());
 	addR(aux);
 	int aux2 = atoi(R_[aux].c_str());
@@ -271,76 +263,72 @@ void RAM::DIV(string dir, string oper) {
 	int aux3 = atoi(R_[aux2].c_str());
 	int aux0 = atoi(R_[0].c_str());
 
-	cout << "\n\tDIV \t";
+	if (comment) cout << "\n\tDIV \t";
 	if (dir == "") {
 		R_[0] = to_string(aux0 / aux2);
-		cout << "R[0] = R[0] / R[" << aux << "] = " << aux0 << " / " << aux2 << " = " << R_[0];
+		if (comment) cout << "R[0] = R[0] / R[" << aux << "] = " << aux0 << " / " << aux2 << " = " << R_[0];
 	}
 	else if (dir == "=") {
 		R_[0] = to_string(aux0 / aux);
-		cout << "R[0] = R[0] / operador = " << aux0 << " / " << aux << " = " << R_[0];
+		if (comment) cout << "R[0] = R[0] / operador = " << aux0 << " / " << aux << " = " << R_[0];
 	}
 	else if (dir == "*") {
 		R_[0] = to_string(aux0 / aux3);
-		cout << "R[0] = R[0] / R[R[" << aux << "]] = R[0] / R[" << aux2 << "] = " << aux0 << " / " << aux3 << " = " << R_[0];
+		if (comment) cout << "R[0] = R[0] / R[R[" << aux << "]] = R[0] / R[" << aux2 << "] = " << aux0 << " / " << aux3 << " = " << R_[0];
 	}
-	else
-		cout << "\t\t Error en el direccionamiento";
 }
 
 //========================================================================================
 // EJECUTA EL OPCODE READ
 //========================================================================================
 
-void RAM::READ(string dir, string oper, index i) {
+void RAM::READ(string dir, string oper, index i, Tcomment comment) {
 	int aux = atoi(oper.c_str());
 
-	cout << "\n\tREAD \t";
+	if (comment) cout << "\n\tREAD \t";
 	if (dir == "") {
 		addR(aux);
 		R_[aux] = get_CE(i);
-		cout << "R[" << aux << "] = CE[" << i << "] = " << R_[aux];
+		if (comment) cout << "R[" << aux << "] = CE[" << i << "] = " << R_[aux];
 	} else if (dir == "*")  {
 		addR(aux);
 		int aux2 = atoi(R_[aux].c_str());
 		addR(aux2);
 		R_[aux2] = get_CE(i);
-		cout << "R[R[" << aux << "]] = R[" << aux2 << "] = CE[" << i << "] = " << R_[aux2];
-	} else
-		cout << "\t\t Error en el direccionamiento";
+		if (comment) cout << "R[R[" << aux << "]] = R[" << aux2 << "] = CE[" << i << "] = " << R_[aux2];
+	}
 }
 
 //========================================================================================
 // EJECUTA EL OPCODE WRITE
 //========================================================================================
 
-void RAM::WRITE(string dir, string oper) {
+void RAM::WRITE(string dir, string oper, Tcomment comment) {
 	int aux = atoi(oper.c_str());
 	addR(aux);
 	int aux2 = atoi(R_[aux].c_str());
 
-	cout << "\n\tWRITE \t";
+	if (comment) cout << "\n\tWRITE \t";
 	if (dir == "") {
 		set_CS(R_[aux]);
-		cout << "CS[" << CS_.size() << "] = R[" << aux << "] = " << R_[aux];
+		if (comment) cout << "CS[" << CS_.size() << "] = R[" << aux << "] = " << R_[aux];
 	} else if (dir == "=") {
 		set_CS(oper);
-		cout << "CS[" << CS_.size() << "] = operador = " << oper;
+		if (comment) cout << "CS[" << CS_.size() << "] = operador = " << oper;
 	} else if (dir == "*") {
 		set_CS(R_[aux2]);
-		cout << "CS[" << CS_.size() << "] = R[R[" << aux << "]] = R[" << aux2 << "] = " << R_[aux];
-	} else
-		cout << "\t\t Error en el direccionamiento";
+		if (comment) cout << "CS[" << CS_.size() << "] = R[R[" << aux << "]] = R[" << aux2 << "] = " << R_[aux];
+	}
 }
 
 //========================================================================================
 // EJECUTA EL OPCODE JUMP
 //========================================================================================
 
-index RAM::JUMP(string tag, index i) {
+index RAM::JUMP(string tag, index i, Tcomment comment) {
 	int aux1 = atoi(tag.c_str());			// Línea de la etiqueta
 
-	cout << "\n\tJUMP \tL" << aux1;
+	if (comment) cout << "\n\tJUMP \tL" << aux1;
 	return aux1;
 }
 
@@ -348,12 +336,12 @@ index RAM::JUMP(string tag, index i) {
 // EJECUTA EL OPCODE JGTZ
 //========================================================================================
 
-index RAM::JGTZ(string tag, index i) {
+index RAM::JGTZ(string tag, index i, Tcomment comment) {
 	int aux0 = atoi(R_[0].c_str());			// Acumulador, int
 	int aux1 = atoi(tag.c_str());			// Línea de la etiqueta
 	int linea = (aux0 > 0) ? aux1 : (i + 1);
 
-	cout << "\n\tJGTZ \tL" << linea;
+	if (comment) cout << "\n\tJGTZ \tL" << linea;
 
 	return linea;
 }
@@ -362,12 +350,12 @@ index RAM::JGTZ(string tag, index i) {
 // EJECUTA EL OPCODE JZERO
 //========================================================================================
 
-index RAM::JZERO(string tag, index i) {
+index RAM::JZERO(string tag, index i, Tcomment comment) {
 	int aux0 = atoi(R_[0].c_str());			// Acumulador, int
 	int aux1 = atoi(tag.c_str());			// Línea de la etiqueta
 	int linea = (aux0 == 0) ? aux1 : (i + 1);
 
-	cout << "\n\tJZERO \tL" << linea;
+	if (comment) cout << "\n\tJZERO \tL" << linea;
 
 	return linea;
 }
@@ -376,17 +364,17 @@ index RAM::JZERO(string tag, index i) {
 // EJECUTA EL OPCODE HALT
 //========================================================================================
 
-void RAM::HALT() {
+bool RAM::HALT(Tcomment comment) {
 
-	cout << "\n\tHALT \t FIN\n";
-
+	if (comment) cout << "\n\tHALT \t FIN\n";
+	return false;
 }
 
 //========================================================================================
 // LLAMA A LA FUNCIÓN QUE CORRESPONDA POR LA LÍNEA i DE CÓDIGO P EN LA QUE ESTÉ
 //========================================================================================
 
-void RAM::ejecuta(index &i, index &j) {
+bool RAM::ejecuta(index &i, index &j, Tcomment comment) {
 		// Separamos el opcode, el operando/etiqueta y direccionamiento
 	string opcode = get_P(i, 1);	// Opcode de la línea i
 	string oper = get_P(i, 2);		// Operando de la línea i
@@ -403,21 +391,25 @@ void RAM::ejecuta(index &i, index &j) {
 		dir = "=";
 		oper = oper.substr(1, oper.size() - 1);
 	}
+	// Seguimos ejecutando salvo sea HALT
+	bool sig = true;
 
-	if (opcode == "1") LOAD(dir, oper);
-	else if (opcode == "2") STORE(dir, oper);
-	else if (opcode == "3") ADD(dir, oper);
-	else if (opcode == "4") SUB(dir, oper);
-	else if (opcode == "5") MULT(dir, oper);
-	else if (opcode == "6") DIV(dir, oper);
-	else if (opcode == "7") {READ(dir, oper, j); j++;}			// j++ para que en la próxima lea la sig.
-	else if (opcode == "8") WRITE(dir, oper);
-	else if (opcode == "9") i = JUMP(oper, i) - 1;
-	else if (opcode == "10") i = JGTZ(oper, i) - 1;
-	else if (opcode == "11") i = JZERO(oper, i) - 1;
-	else if (opcode == "12") HALT();
-	else HALT();			// No existe el código
+	if (opcode == "1") LOAD(dir, oper, comment);
+	else if (opcode == "2") STORE(dir, oper, comment);
+	else if (opcode == "3") ADD(dir, oper, comment);
+	else if (opcode == "4") SUB(dir, oper, comment);
+	else if (opcode == "5") MULT(dir, oper, comment);
+	else if (opcode == "6") DIV(dir, oper, comment);
+	else if (opcode == "7") { READ(dir, oper, j, comment); j++; }			// j++ para que en la próxima lea la sig.
+	else if (opcode == "8") WRITE(dir, oper, comment);
+	else if (opcode == "9") i = JUMP(oper, i, comment) - 1;
+	else if (opcode == "10") i = JGTZ(oper, i, comment) - 1;
+	else if (opcode == "11") i = JZERO(oper, i, comment) - 1;
+	else if (opcode == "12") sig = HALT(comment);		// Termina porque el código termina
+	else sig = HALT(comment);			// No existe el código
 	i++;
+
+	return sig;
 }
 
 //========================================================================================
@@ -557,11 +549,21 @@ void RAM::set_R(index i, string item)
 
 void RAM::traza()
 {
-	int paso = 0;
+	bool sig = true;
 	index i = 1;
 	index j = 1;	// Índice inicial para la cinta de entrada
-	while ((get_P(i,1) != "12") && (i <= get_m())) {			// Mientras no encontremos una sentencia HALT o el final de P
-		ejecuta(i, j);
+	while ((sig) && (i <= get_m())) {			// Mientras no encontremos una sentencia HALT o el final de P
+		sig = ejecuta(i, j, CON);
+	}
+}
+
+void RAM::go()
+{
+	bool sig = true;
+	index i = 1;
+	index j = 1;	// Índice inicial para la cinta de entrada
+	while ((sig) && (i <= get_m())) {			// Mientras no encontremos una sentencia HALT o el final de P
+		sig = ejecuta(i, j, SIN);
 	}
 }
 

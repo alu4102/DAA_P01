@@ -42,7 +42,6 @@ void menu(void)
 			cout << "\t i) Ver Cinta de Entrada. " << endl;
 			cout << "\t o) Ver Cinta de Salida. " << endl;
 			cout << "\t u) Ver el c\242digo codificado. " << endl;
-			cout << "\t v) Ver el c\242digo descodificado. " << endl;
 			cout << "\t w) Ver el c\242digo original. " << endl;
 			cout << "\t c) Ver C\242digos de los OPCODE. " << endl;
 			cout << "" << endl;
@@ -100,8 +99,6 @@ void menu(void)
 				cin.get(); break;
 				// IMPRIMIR CÓDIGO CODIFICADO
 			case 'u':	A.print_P_Cod(); cin.get(); break;		// Se imprime el código codificado
-				// IMPRIMIR CÓDIGO DESCODIFICADO
-			case 'v':	A.print_P_Desc(); cin.get(); break;	// Se imprime el código descodificado después de haber sido codificado
 				// IMPRIMIR CÓDIGO ORIGINAL
 			case 'w':
 				inP.open(fileP.c_str(), ifstream::in);
@@ -123,15 +120,18 @@ void menu(void)
 				// ****************************************
 				// TRAZA
 			case 't':
+				cout << "\n\n\t\t TRAZA \n\n";
 				A.traza();
 				cin.get(); break;
 				// GO
 			case 'g':
+				A.go();
+				cout << "\n\n\t\t La ejecuci\242n se ha realizado con  \202xito.";
 				cin.get(); break;
 				// DESENSAMBLADOR
 			case 's':
 				cout << "\n\n\t\t DESENSAMBLADOR \n\n";
-
+				A.print_P_Desc(); cin.get(); break;	// Se imprime el código descodificado después de haber sido codificado
 				cin.get(); break;
 				// ****************************************
 				// AYUDA
