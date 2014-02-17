@@ -219,9 +219,13 @@ void RAM::DIV(string dir, string oper) {
 // EJECUTA EL OPCODE READ
 //========================================================================================
 
-void RAM::READ(string dir, string oper) {
-
-
+void RAM::READ(string dir, string oper, int i) {
+	if (dir == "")
+		R_[atoi(oper.c_str())] = get_CE(i);
+	else if (dir == "*")
+		R_[atoi(R_[atoi(oper.c_str())].c_str())] = get_CE(i);
+	else
+		cout << "\t\t Error en el direccionamiento";
 }
 
 //========================================================================================
@@ -229,8 +233,14 @@ void RAM::READ(string dir, string oper) {
 //========================================================================================
 
 void RAM::WRITE(string dir, string oper) {
-
-
+	if (dir == "")
+		set_CS(R_[atoi(oper.c_str())]);
+	else if (dir == "=")
+		set_CS(oper);
+	else if (dir == "*")
+		set_CS(R_[atoi(R_[atoi(oper.c_str())].c_str())]);
+	else
+		cout << "\t\t Error en el direccionamiento";
 }
 
 //========================================================================================
