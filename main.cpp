@@ -4,13 +4,7 @@ void menu(void);
 
 int main(int argc, char* argv[]) {
 
-	RAM A;
-	A.set_R("5");
-	A.set_R("3");
-	A.set_R("2");
-	A.LOAD("*", "3");
-	A.print_R();
-	//menu();
+	menu();
 
 	//cout << endl << "Presione <Enter>...";
 	cin.get();
@@ -80,9 +74,9 @@ void menu(void)
 				inP.open(fileP.c_str(), ifstream::in);			
 				inCE.open(fileCE.c_str(), ifstream::in);
 				if (inP.is_open() && inCE.is_open()) {
-					A.read_P(inP);
-					A.read_CE(inCE);
-					inP.close();
+					A.read_P(inP);						// Carga en la matriz desde el fichero, los datos necesarios
+					inP.close();						// Se cierra el fichero
+					A.read_CE(inCE);					// Carga la cinta de entrada
 					inCE.close();
 					cout << "\n\n\t\t El archivo ha sido cargado con \202xito.";
 					cin.get();
@@ -129,6 +123,7 @@ void menu(void)
 				// ****************************************
 				// TRAZA
 			case 't':
+				A.traza();
 				cin.get(); break;
 				// GO
 			case 'g':

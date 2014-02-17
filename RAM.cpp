@@ -139,9 +139,8 @@ string RAM::desOpcode(string str) {
 
 void RAM::LOAD(string dir, string oper) {
 	int aux = atoi(oper.c_str());
-	int aux2 = atoi(R_[aux].c_str());
-
-	cout << "\nLOAD \t A\244ade al acumulador: \t";
+	
+	cout << "\n\tLOAD \t";
 	if (dir == "") {
 		R_[0] = R_[aux];
 		cout << "R[0] = R[" << aux << "] = " << R_[0];
@@ -149,6 +148,8 @@ void RAM::LOAD(string dir, string oper) {
 		R_[0] = oper;
 		cout << "R[0] = operando = " << R_[0];
 	} else if (dir == "*") {
+		addR(aux);
+		int aux2 = atoi(R_[aux].c_str());
 		R_[0] = R_[aux2];
 		cout << "R[0] = R[R[" << aux << "]] = R[" << R_[aux] << "] = " << R_[0];
 	} else
@@ -162,7 +163,7 @@ void RAM::LOAD(string dir, string oper) {
 void RAM::STORE(string dir, string oper) {
 	int aux = atoi(oper.c_str());
 	
-	cout << "\nSTORE\t Guarda el acumulador: \t";
+	cout << "\n\tSTORE\t";
 	if (dir == "") {
 		addR(aux);
 		R_[aux] = R_[0];
@@ -183,11 +184,13 @@ void RAM::STORE(string dir, string oper) {
 
 void RAM::ADD(string dir, string oper) {
 	int aux = atoi(oper.c_str());
+	addR(aux);
 	int aux2 = atoi(R_[aux].c_str());
+	addR(aux2);
 	int aux3 = atoi(R_[aux2].c_str());
 	int aux0 = atoi(R_[0].c_str());
 
-	cout << "\nADD  \t Suma al acumulador: \t";
+	cout << "\n\tADD  \t";
 	if (dir == "") {
 		R_[0] = to_string(aux0 + aux2);
 		cout << "R[0] = R[0] + R[" << aux << "] = " << aux0 << " + " << aux2 << " = " << R_[0];
@@ -207,18 +210,23 @@ void RAM::ADD(string dir, string oper) {
 
 void RAM::SUB(string dir, string oper) {
 	int aux = atoi(oper.c_str());
+	addR(aux);
 	int aux2 = atoi(R_[aux].c_str());
+	addR(aux2);
 	int aux3 = atoi(R_[aux2].c_str());
 	int aux0 = atoi(R_[0].c_str());
 
-	cout << "\nSUB  \t Resta al acumulador: \t";
-	if (dir == "")
+	cout << "\n\tSUB  \t";
+	if (dir == "") {
 		R_[0] = to_string(aux0 - aux2);
-	else if (dir == "=")
+		cout << "R[0] = R[0] - R[" << aux << "] = " << aux0 << " - " << aux2 << " = " << R_[0];
+	} else if (dir == "=") {
 		R_[0] = to_string(aux0 - aux);
-	else if (dir == "*")
+		cout << "R[0] = R[0] - operador = " << aux0 << " - " << aux << " = " << R_[0];
+	} else if (dir == "*") {
 		R_[0] = to_string(aux0 - aux3);
-	else
+		cout << "R[0] = R[0] - R[R[" << aux << "]] = R[0] - R[" << aux2 << "] = " << aux0 << " - " << aux3 << " = " << R_[0];
+	} else
 		cout << "\t\t Error en el direccionamiento";
 }
 
@@ -228,17 +236,25 @@ void RAM::SUB(string dir, string oper) {
 
 void RAM::MULT(string dir, string oper) {
 	int aux = atoi(oper.c_str());
+	addR(aux);
 	int aux2 = atoi(R_[aux].c_str());
+	addR(aux2);
 	int aux3 = atoi(R_[aux2].c_str());
 	int aux0 = atoi(R_[0].c_str());
 
-	cout << "\nMULT \t Multiplica al acumulador: \t";
-	if (dir == "")
+	cout << "\n\tMULT \t";
+	if (dir == "") {
 		R_[0] = to_string(aux0 * aux2);
-	else if (dir == "=")
+		cout << "R[0] = R[0] * R[" << aux << "] = " << aux0 << " * " << aux2 << " = " << R_[0];
+	}
+	else if (dir == "=") {
 		R_[0] = to_string(aux0 * aux);
-	else if (dir == "*")
+		cout << "R[0] = R[0] * operador = " << aux0 << " * " << aux << " = " << R_[0];
+	}
+	else if (dir == "*") {
 		R_[0] = to_string(aux0 * aux3);
+		cout << "R[0] = R[0] * R[R[" << aux << "]] = R[0] * R[" << aux2 << "] = " << aux0 << " * " << aux3 << " = " << R_[0];
+	}
 	else
 		cout << "\t\t Error en el direccionamiento";
 }
@@ -249,17 +265,25 @@ void RAM::MULT(string dir, string oper) {
 
 void RAM::DIV(string dir, string oper) {
 	int aux = atoi(oper.c_str());
+	addR(aux);
 	int aux2 = atoi(R_[aux].c_str());
+	addR(aux2);
 	int aux3 = atoi(R_[aux2].c_str());
 	int aux0 = atoi(R_[0].c_str());
 
-	cout << "\nDIV \t Divide al acumulador: \t";
-	if (dir == "")
+	cout << "\n\tDIV \t";
+	if (dir == "") {
 		R_[0] = to_string(aux0 / aux2);
-	else if (dir == "=")
+		cout << "R[0] = R[0] / R[" << aux << "] = " << aux0 << " / " << aux2 << " = " << R_[0];
+	}
+	else if (dir == "=") {
 		R_[0] = to_string(aux0 / aux);
-	else if (dir == "*")
+		cout << "R[0] = R[0] / operador = " << aux0 << " / " << aux << " = " << R_[0];
+	}
+	else if (dir == "*") {
 		R_[0] = to_string(aux0 / aux3);
+		cout << "R[0] = R[0] / R[R[" << aux << "]] = R[0] / R[" << aux2 << "] = " << aux0 << " / " << aux3 << " = " << R_[0];
+	}
 	else
 		cout << "\t\t Error en el direccionamiento";
 }
@@ -270,14 +294,15 @@ void RAM::DIV(string dir, string oper) {
 
 void RAM::READ(string dir, string oper, index i) {
 	int aux = atoi(oper.c_str());
-	int aux2 = atoi(R_[aux].c_str());
 
-	cout << "\nREAD \t Lee de la CE: \t\t";
+	cout << "\n\tREAD \t";
 	if (dir == "") {
 		addR(aux);
 		R_[aux] = get_CE(i);
 		cout << "R[" << aux << "] = CE[" << i << "] = " << R_[aux];
 	} else if (dir == "*")  {
+		addR(aux);
+		int aux2 = atoi(R_[aux].c_str());
 		addR(aux2);
 		R_[aux2] = get_CE(i);
 		cout << "R[R[" << aux << "]] = R[" << aux2 << "] = CE[" << i << "] = " << R_[aux2];
@@ -290,14 +315,21 @@ void RAM::READ(string dir, string oper, index i) {
 //========================================================================================
 
 void RAM::WRITE(string dir, string oper) {
-	cout << "\nWRITE \t Escribe en la CS: \t";
-	if (dir == "")
-		set_CS(R_[atoi(oper.c_str())]);
-	else if (dir == "=")
+	int aux = atoi(oper.c_str());
+	addR(aux);
+	int aux2 = atoi(R_[aux].c_str());
+
+	cout << "\n\tWRITE \t";
+	if (dir == "") {
+		set_CS(R_[aux]);
+		cout << "CS[" << CS_.size() << "] = R[" << aux << "] = " << R_[aux];
+	} else if (dir == "=") {
 		set_CS(oper);
-	else if (dir == "*")
-		set_CS(R_[atoi(R_[atoi(oper.c_str())].c_str())]);
-	else
+		cout << "CS[" << CS_.size() << "] = operador = " << oper;
+	} else if (dir == "*") {
+		set_CS(R_[aux2]);
+		cout << "CS[" << CS_.size() << "] = R[R[" << aux << "]] = R[" << aux2 << "] = " << R_[aux];
+	} else
 		cout << "\t\t Error en el direccionamiento";
 }
 
@@ -308,7 +340,7 @@ void RAM::WRITE(string dir, string oper) {
 index RAM::JUMP(string tag, index i) {
 	int aux1 = atoi(tag.c_str());			// Línea de la etiqueta
 
-	cout << "\nJUMP \t Salto de l\241nea: \tL" << aux1;
+	cout << "\n\tJUMP \tL" << aux1;
 	return aux1;
 }
 
@@ -321,7 +353,7 @@ index RAM::JGTZ(string tag, index i) {
 	int aux1 = atoi(tag.c_str());			// Línea de la etiqueta
 	int linea = (aux0 > 0) ? aux1 : (i + 1);
 
-	cout << "\nJGTZ \t Salto de l\241nea: \tL" << linea;
+	cout << "\n\tJGTZ \tL" << linea;
 
 	return linea;
 }
@@ -335,7 +367,7 @@ index RAM::JZERO(string tag, index i) {
 	int aux1 = atoi(tag.c_str());			// Línea de la etiqueta
 	int linea = (aux0 == 0) ? aux1 : (i + 1);
 
-	cout << "\nJZERO \t Salto de l\241nea: \tL" << linea;
+	cout << "\n\tJZERO \tL" << linea;
 
 	return linea;
 }
@@ -346,7 +378,7 @@ index RAM::JZERO(string tag, index i) {
 
 void RAM::HALT() {
 
-	cout << "\nHALT \t FIN\n";
+	cout << "\n\tHALT \t FIN\n";
 
 }
 
@@ -531,10 +563,6 @@ void RAM::traza()
 	while ((get_P(i,1) != "12") && (i <= get_m())) {			// Mientras no encontremos una sentencia HALT o el final de P
 		ejecuta(i, j);
 	}
-
-	//for (int i = 1; i <= get_m(); i++) {	// Lee todas las instrucciones del código
-
-	//}
 }
 
 //========================================================================================
