@@ -24,6 +24,7 @@ void menu(void)
 		// Ficheros Estándar
 	ifstream inP(fileP.c_str());			// Entrada del fichero del programa a cargar en la máquina de RAM
 	ifstream inCE(fileCE.c_str());			// Entrada del fichero de la cinta de entrada
+	ofstream outCS(fileCS.c_str());			// Salida del fichero de la cinta de salida
 	if (inP.is_open() && inCE.is_open())
 	{
 		A.read_P(inP);						// Carga en la matriz desde el fichero, los datos necesarios
@@ -72,6 +73,7 @@ void menu(void)
 				cin >> fileCS;
 				inP.open(fileP.c_str(), ifstream::in);			
 				inCE.open(fileCE.c_str(), ifstream::in);
+				outCS.open(fileP.c_str(), ofstream::out);
 				if (inP.is_open() && inCE.is_open()) {
 					A.read_P(inP);						// Carga en la matriz desde el fichero, los datos necesarios
 					inP.close();						// Se cierra el fichero
@@ -136,11 +138,27 @@ void menu(void)
 				// ****************************************
 				// AYUDA
 			case 'h':
+				cout << "\n\n\t\t AYUDA \n\n";
+				cout << "       ******************************************************\n";
+				cout << "\t Deber\241a primero:\n";
+				cout << "\t 1) Cargar los ficheros con el comando l).\n";
+				cout << "\t Luego, ya podr\241a ver estos ficheros con los \n";
+				cout << "\t comandos: r, i, o, w. Una vez verificado los \n";
+				cout << "\t ficheros, puedes observar como queda la codi- \n";
+				cout << "\t ficaci\242n con el comando: w y con el comando c\n";
+				cout << "\t la codificaci\242n utilizada.\n";
+				cout << "\t Por \243ltimo, puedes utilizar los comandos: g\n";
+				cout << "\t para ejecutar el programa.\n";
+				cout << "\t O el comando t para ejecutarlo pero observando\n";
+				cout << "\t cada paso.\n";
+				cout << "\t O observar como quedar\241a al descodificarlo tras\n";
+				cout << "\t haberlo codificado con.\n";
+				cout << "\t el comando s.\n";
 				cin.get(); break;
 				// ****************************************
 				// SALIR
 			case 'x': system("cls"); cout << "\n\n\t\t Esperemos verlo nuevamente... "; continue;
-			default: cout << "\n\n\n\t\t Opcion no valida. "; cin.get(); break;
+			default: cout << "\n\n\n\t\t Opci\242n no valida. "; cin.get(); break;
 			} // Fin switch
 			cout << endl << "\n\tPresione <Enter>...";
 			cin.get();
@@ -150,5 +168,7 @@ void menu(void)
 	{
 		cout << "\n\n\t\t Error al leer fichero uno de los ficheros.";
 	}
+	A.write_CS(outCS);
+	outCS.close();
 	cin.get();
 }

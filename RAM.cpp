@@ -180,7 +180,7 @@ void RAM::STORE(string dir, string oper, Tcomment comment) {
 // EJECUTA EL OPCODE ADD
 //========================================================================================
 
-void RAM::ADD(string dir, string oper, Tcomment comment) {
+bool RAM::ADD(string dir, string oper, Tcomment comment) {
 	int aux = atoi(oper.c_str());
 	addR(aux);
 	int aux2 = atoi(R_[aux].c_str());
@@ -199,13 +199,15 @@ void RAM::ADD(string dir, string oper, Tcomment comment) {
 		R_[0] = to_string(aux0 + aux3);
 		if (comment) cout << "R[0] = R[0] + R[R[" << aux << "]] = R[0] + R[" << aux2 << "] = " << aux0 << " + " << aux3 << " = " << R_[0];
 	}
+
+	return true;
 }
 
 //========================================================================================
 // EJECUTA EL OPCODE SUB
 //========================================================================================
 
-void RAM::SUB(string dir, string oper, Tcomment comment) {
+bool RAM::SUB(string dir, string oper, Tcomment comment) {
 	int aux = atoi(oper.c_str());
 	addR(aux);
 	int aux2 = atoi(R_[aux].c_str());
@@ -224,13 +226,15 @@ void RAM::SUB(string dir, string oper, Tcomment comment) {
 		R_[0] = to_string(aux0 - aux3);
 		if (comment) cout << "R[0] = R[0] - R[R[" << aux << "]] = R[0] - R[" << aux2 << "] = " << aux0 << " - " << aux3 << " = " << R_[0];
 	}
+
+	return true;
 }
 
 //========================================================================================
 // EJECUTA EL OPCODE MULT
 //========================================================================================
 
-void RAM::MULT(string dir, string oper, Tcomment comment) {
+bool RAM::MULT(string dir, string oper, Tcomment comment) {
 	int aux = atoi(oper.c_str());
 	addR(aux);
 	int aux2 = atoi(R_[aux].c_str());
@@ -249,13 +253,15 @@ void RAM::MULT(string dir, string oper, Tcomment comment) {
 		R_[0] = to_string(aux0 * aux3);
 		if (comment) cout << "R[0] = R[0] * R[R[" << aux << "]] = R[0] * R[" << aux2 << "] = " << aux0 << " * " << aux3 << " = " << R_[0];
 	}
+
+	return true;
 }
 
 //========================================================================================
 // EJECUTA EL OPCODE DIV
 //========================================================================================
 
-void RAM::DIV(string dir, string oper, Tcomment comment) {
+bool RAM::DIV(string dir, string oper, Tcomment comment) {
 	int aux = atoi(oper.c_str());
 	addR(aux);
 	int aux2 = atoi(R_[aux].c_str());
@@ -263,19 +269,24 @@ void RAM::DIV(string dir, string oper, Tcomment comment) {
 	int aux3 = atoi(R_[aux2].c_str());
 	int aux0 = atoi(R_[0].c_str());
 
+	bool sig = true;
+
 	if (comment) cout << "\n\tDIV \t";
-	if (dir == "") {
+	if ((dir == "") && (aux2 != 0)) {
 		R_[0] = to_string(aux0 / aux2);
 		if (comment) cout << "R[0] = R[0] / R[" << aux << "] = " << aux0 << " / " << aux2 << " = " << R_[0];
-	}
-	else if (dir == "=") {
+	} else if ((dir == "=") && (aux != 0)) {
 		R_[0] = to_string(aux0 / aux);
 		if (comment) cout << "R[0] = R[0] / operador = " << aux0 << " / " << aux << " = " << R_[0];
-	}
-	else if (dir == "*") {
+	} else if ((dir == "*") && (aux3 != 0)) {
 		R_[0] = to_string(aux0 / aux3);
 		if (comment) cout << "R[0] = R[0] / R[R[" << aux << "]] = R[0] / R[" << aux2 << "] = " << aux0 << " / " << aux3 << " = " << R_[0];
+	} else {
+		cout << "DIVISI\343N POR CERO.";
+		sig = HALT(comment);
 	}
+
+	return sig;
 }
 
 //========================================================================================
@@ -366,7 +377,7 @@ index RAM::JZERO(string tag, index i, Tcomment comment) {
 
 bool RAM::HALT(Tcomment comment) {
 
-	if (comment) cout << "\n\tHALT \t FIN\n";
+	if (comment) cout << "\n\tHALT \tFIN\n";
 	return false;
 }
 
@@ -396,10 +407,10 @@ bool RAM::ejecuta(index &i, index &j, Tcomment comment) {
 
 	if (opcode == "1") LOAD(dir, oper, comment);
 	else if (opcode == "2") STORE(dir, oper, comment);
-	else if (opcode == "3") ADD(dir, oper, comment);
-	else if (opcode == "4") SUB(dir, oper, comment);
-	else if (opcode == "5") MULT(dir, oper, comment);
-	else if (opcode == "6") DIV(dir, oper, comment);
+	else if (opcode == "3") sig = ADD(dir, oper, comment);
+	else if (opcode == "4") sig = SUB(dir, oper, comment);
+	else if (opcode == "5") sig = MULT(dir, oper, comment);
+	else if (opcode == "6") sig = DIV(dir, oper, comment);
 	else if (opcode == "7") { READ(dir, oper, j, comment); j++; }			// j++ para que en la próxima lea la sig.
 	else if (opcode == "8") WRITE(dir, oper, comment);
 	else if (opcode == "9") i = JUMP(oper, i, comment) - 1;
@@ -409,6 +420,7 @@ bool RAM::ejecuta(index &i, index &j, Tcomment comment) {
 	else sig = HALT(comment);			// No existe el código
 	i++;
 
+	if (!sig) cout << "\n\t FIN: Por la instrucci\242n: " << desOpcode(opcode) << " cuya posici\242n es: " << (i - 1);								// Si hay error pongo la instrucción
 	return sig;
 }
 
@@ -655,6 +667,20 @@ istream& RAM::read_CE(istream& file)
 		file >> str;
 		set_CE(str);
 	}
+
+	return file;
+}
+
+//========================================================================================
+// ESCRIBE POR FICHERO LA CINTA DE SALIDA
+//========================================================================================
+
+ofstream& RAM::write_CS(ofstream& file)
+{
+	CS_.clear();
+
+	for (int i = 1; i <= get_CS().size(); i++)
+		cout << get_CS(i) << "\n";
 
 	return file;
 }

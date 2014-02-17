@@ -28,10 +28,10 @@ private:
 		// Ejecución de los OPCODE
 	void LOAD(string dir, string oper, Tcomment comment);			/* dir = direccionamiento, oper = operando*/
 	void STORE(string dir, string oper, Tcomment comment);
-	void ADD(string dir, string oper, Tcomment comment);
-	void SUB(string dir, string oper, Tcomment comment);
-	void MULT(string dir, string oper, Tcomment comment);
-	void DIV(string dir, string oper, Tcomment comment);
+	bool ADD(string dir, string oper, Tcomment comment);
+	bool SUB(string dir, string oper, Tcomment comment);
+	bool MULT(string dir, string oper, Tcomment comment);
+	bool DIV(string dir, string oper, Tcomment comment);
 	void READ(string dir, string oper, index i, Tcomment comment);
 	void WRITE(string dir, string oper, Tcomment comment);
 	index JUMP(string tag, index i, Tcomment comment);
@@ -77,10 +77,9 @@ public:
 		// Métodos: E/S por fichero/consola
 	istream& read_P(istream& in);				/* Lee por fichero el programa a cargar en la Máquina RAM. */
 	istream& read_CE(istream& in);				/* Lee por fichero la cinta de entrada. */
+	ofstream& write_CS(ofstream& out);			/* Escribe por fichero la cinta de salida. */
 	void print_P_Cod();							/* Imprime la estructura codificada, que es tal como está la estructura. */
-	void print_P_Desc();						/* Imprime la estructura descodificada. */
-	//void desensamblado();						/* Imprime el Desensamblado total. */
-	//void desensamblado(index);				/* Imprime la estructura Desensamblado total. */
+	void print_P_Desc();						/* Imprime la estructura descodificada, DESENSAMBLADA. */
 	void print_CE();							/* Imprime la cinta de entrada. */
 	void print_CS();							/* Imprime la cinta de entrada. */
 	void print_R();								/* Imprime los registros. */
