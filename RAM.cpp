@@ -103,6 +103,32 @@ string RAM::codOpcode(string str) {
 	else if (str == "JGTZ") out = "10";
 	else if (str == "JZERO") out = "11";
 	else if (str == "HALT") out = "12";
+	else out = "0";							// Sino existe devuelve 0 que será error
+
+	return out;
+}
+
+//========================================================================================
+// DEVUELVE EL STRING DESCODIFICADO DEL OPCODE
+//========================================================================================
+
+string RAM::desOpcode(string str) {
+
+	string out;								// Devuelve el string con su respectivo OPCODE
+
+	if (str == "1") out = "LOAD";
+	else if (str == "2") out = "STORE";
+	else if (str == "3") out = "ADD";
+	else if (str == "4") out = "SUB";
+	else if (str == "5") out = "MULT";
+	else if (str == "6") out = "DIV";
+	else if (str == "7") out = "READ";
+	else if (str == "8") out = "WRITE";
+	else if (str == "9") out = "JUMP";
+	else if (str == "10") out = "JGTZ";
+	else if (str == "11") out = "JZERO";
+	else if (str == "12") out = "HALT";
+	else out = "ERROR";
 
 	return out;
 }
@@ -285,27 +311,41 @@ void RAM::HALT() {
 }
 
 //========================================================================================
-// DEVUELVE EL STRING DESCODIFICADO DEL OPCODE
+// LLAMA A LA FUNCIÓN QUE CORRESPONDA POR LA LÍNEA i DE CÓDIGO P EN LA QUE ESTÉ
 //========================================================================================
 
-string RAM::desOpcode(string str) {
+void RAM::ejecuta(index i, index j) {
+		// Separamos el opcode, el operando/etiqueta y direccionamiento
+	string opcode = get_P(i, 1);	// Opcode de la línea i
+	string oper = get_P(i, 2);		// Operando de la línea i
+	string dir = "";				// Direccionamiento de la línea i
+	index indA = oper.find("*");	// Índice donde empieza el asterisco
+	index indI = oper.find("=");	// Índice donde empieza el =
+	if (indA < 100)
+	{
+		dir = "*";
+		oper = oper.substr(1, oper.size() - 1);
+	}
+	else if (indI < 100)
+	{
+		dir = "=";
+		oper = oper.substr(1, oper.size() - 1);
+	}
 
-	string out;								// Devuelve el string con su respectivo OPCODE
+	if (opcode == "1") LOAD(dir, oper);
+	else if (opcode == "2") STORE(dir, oper);
+	else if (opcode == "3") ADD(dir, oper);
+	else if (opcode == "4") SUB(dir, oper);
+	else if (opcode == "5") MULT(dir, oper);
+	else if (opcode == "6") DIV(dir, oper);
+	else if (opcode == "7") READ(dir, oper, j);
+	else if (opcode == "8") WRITE(dir, oper);
+	else if (opcode == "9") JUMP(oper, i);
+	else if (opcode == "10") JGTZ(oper, i);
+	else if (opcode == "11") JZERO(oper, i);
+	else if (opcode == "12") HALT();
+	else HALT();			// No existe el código
 
-	if (str == "1") out = "LOAD";
-	else if (str == "2") out = "STORE";
-	else if (str == "3") out = "ADD";
-	else if (str == "4") out = "SUB";
-	else if (str == "5") out = "MULT";
-	else if (str == "6") out = "DIV";
-	else if (str == "7") out = "READ";
-	else if (str == "8") out = "WRITE";
-	else if (str == "9") out = "JUMP";
-	else if (str == "10") out = "JGTZ";
-	else if (str == "11") out = "JZERO";
-	else if (str == "12") out = "HALT";
-
-	return out;
 }
 
 // ************* CONSTRUCTORES
@@ -375,6 +415,17 @@ string RAM::get_R(index i)
 		return 0;
 	}
 	return R_[i];
+}
+
+//========================================================================================
+// ESTABLECER AL FINAL DEL VECTOR LOS VALORES DEL OPCODE Y OPERANDO/ETIQUETA DEL VECTOR P
+//========================================================================================
+
+void RAM::set_P(string opc, string oper)
+{
+	P_.push_back(opc); 
+	P_.push_back(oper);
+	set_m(get_m() + 1);
 }
 
 //========================================================================================
