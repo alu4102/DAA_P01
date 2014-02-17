@@ -4,7 +4,13 @@ void menu(void);
 
 int main(int argc, char* argv[]) {
 
-	menu();
+	RAM A;
+	A.set_R("5");
+	A.set_R("3");
+	A.set_R("2");
+	A.LOAD("*", "3");
+	A.print_R();
+	//menu();
 
 	//cout << endl << "Presione <Enter>...";
 	cin.get();
@@ -61,7 +67,8 @@ void menu(void)
 
 			switch (opcion)
 			{
-			// CARGAR FICHEROS
+				// ****************************************
+				// CARGAR FICHEROS
 			case 'l': 
 				cout << "\n\n\t\t Escriba los nombres de los archivos: \n";
 				cout << "\t\t Programa: \t\t";
@@ -70,7 +77,8 @@ void menu(void)
 				cin >> fileCE;
 				cout << "\t\t Cinta de Salida: \t";
 				cin >> fileCS;
-				inP.open(fileP.c_str(), ifstream::in);			// Se carga el nuevo archivo para analizar su código
+				inP.open(fileP.c_str(), ifstream::in);			
+				inCE.open(fileCE.c_str(), ifstream::in);
 				if (inP.is_open() && inCE.is_open()) {
 					A.read_P(inP);
 					A.read_CE(inCE);
@@ -83,40 +91,59 @@ void menu(void)
 					cin.get();
 				}
 				break;
-			// IMPRIMIR CÓDIGO CODIFICADO
+				// ****************************************
+				// VER REGISTRO
+			case 'r':
+				A.print_R();
+				cin.get(); break;
+				// VER CINTA DE ENTRADA
+			case 'i':
+				A.print_CE();
+				cin.get(); break;
+				// VER CINTA DE ENTRADA
+			case 'o':
+				A.print_CS();
+				cin.get(); break;
+				// IMPRIMIR CÓDIGO CODIFICADO
 			case 'u':	A.print_P_Cod(); cin.get(); break;		// Se imprime el código codificado
-			// IMPRIMIR CÓDIGO DESCODIFICADO
+				// IMPRIMIR CÓDIGO DESCODIFICADO
 			case 'v':	A.print_P_Desc(); cin.get(); break;	// Se imprime el código descodificado después de haber sido codificado
-			// IMPRIMIR CÓDIGO ORIGINAL
-			case 'w':	 
+				// IMPRIMIR CÓDIGO ORIGINAL
+			case 'w':
 				inP.open(fileP.c_str(), ifstream::in);
 				if (inP.is_open()) {
 					while (getline(inP, line)) {						// Se recorre el archivo línea a línea
 						cout << line << endl;							// Se imprime cada línea
 					}
 					inP.close();
-				} else {
+				}
+				else {
 					cout << "\n\n\t\t Error al leer fichero uno de los ficheros.";
 					cin.get();
 				}
 				cin.get(); break;
-			// IMPRIME LOS CÓDIGOS DEL OPCODE CORRESPONDIENTE
-			case 'c':	
+				// IMPRIME LOS CÓDIGOS DEL OPCODE CORRESPONDIENTE
+			case 'c':
 				A.print_OPCODE();
 				cin.get(); break;
-			// VER REGISTRO
-			case 'r':
-				A.print_R();
+				// ****************************************
+				// TRAZA
+			case 't':
 				cin.get(); break;
-			// VER CINTA DE ENTRADA
-			case 'i':
-				A.print_CE();
+				// GO
+			case 'g':
 				cin.get(); break;
-			// VER CINTA DE ENTRADA
-			case 'o':
-				A.print_CS();
+				// DESENSAMBLADOR
+			case 's':
+				cout << "\n\n\t\t DESENSAMBLADOR \n\n";
+
 				cin.get(); break;
-			// SALIR
+				// ****************************************
+				// AYUDA
+			case 'h':
+				cin.get(); break;
+				// ****************************************
+				// SALIR
 			case 'x': system("cls"); cout << "\n\n\t\t Esperemos verlo nuevamente... "; continue;
 			default: cout << "\n\n\n\t\t Opcion no valida. "; cin.get(); break;
 			} // Fin switch
