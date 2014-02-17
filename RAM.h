@@ -25,7 +25,7 @@ private:
 	string codOpcode(string);
 	string desOpcode(string);	
 		// Ejecución de los OPCODE
-	void LOAD(string dir, string oper);			/* dir = direccionamiento, oper = operando*/
+	void LOAD(string dir, string oper);		/* dir = direccionamiento, oper = operando*/
 	void STORE(string dir, string oper);
 	void ADD(string dir, string oper);
 	void SUB(string dir, string oper);
@@ -38,12 +38,13 @@ private:
 	index JZERO(string tag, index i);
 	void HALT();
 		// 
+	void ejecuta(index &i, index &j);								/*Línea i de P, y registro j de R*/
 	
 public:
 	// Cronstructores
 	RAM();
 	RAM(index, index);
-	void ejecuta(index i, index j);		/*Línea i de P, y registro j de R*/
+	void addR(index);
 	// Métodos: Obtener y Establecer
 	vector<string> get_P() { return P_; };							/* Devuelve el vector que almacena el código del programa codificado. */
 	string get_P(index i, index j) { return P_[position(i, j)]; };	/* Devuelve el valor de la matriz I en la posición (i, j). */

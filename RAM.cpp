@@ -138,13 +138,20 @@ string RAM::desOpcode(string str) {
 //========================================================================================
 
 void RAM::LOAD(string dir, string oper) {
-	if (dir == "")
-		R_[0] = R_[atoi(oper.c_str())];
-	else if (dir == "=")
+	int aux = atoi(oper.c_str());
+	int aux2 = atoi(R_[aux].c_str());
+
+	cout << "\nLOAD \t A\244ade al acumulador: \t";
+	if (dir == "") {
+		R_[0] = R_[aux];
+		cout << "R[0] = R[" << aux << "] = " << R_[0];
+	} else if (dir == "=") {
 		R_[0] = oper;
-	else if (dir == "*")
-		R_[0] = R_[atoi(R_[atoi(oper.c_str())].c_str())];
-	else
+		cout << "R[0] = operando = " << R_[0];
+	} else if (dir == "*") {
+		R_[0] = R_[aux2];
+		cout << "R[0] = R[R[" << aux << "]] = R[" << R_[aux] << "] = " << R_[0];
+	} else
 		cout << "\t\t Error en el direccionamiento";
 }
 
@@ -153,11 +160,20 @@ void RAM::LOAD(string dir, string oper) {
 //========================================================================================
 
 void RAM::STORE(string dir, string oper) {
-	if (dir == "")
-		R_[atoi(oper.c_str())] = R_[0];
-	else if (dir == "*")
-		R_[atoi(R_[atoi(oper.c_str())].c_str())] = R_[0];
-	else
+	int aux = atoi(oper.c_str());
+	
+	cout << "\nSTORE\t Guarda el acumulador: \t";
+	if (dir == "") {
+		addR(aux);
+		R_[aux] = R_[0];
+		cout << "R[" << aux << "] = R[0] = " << R_[0];
+	} else if (dir == "*") {
+		addR(aux);
+		int aux2 = atoi(R_[aux].c_str());
+		addR(aux2);
+		R_[aux2] = R_[0];
+		cout << "R[R[" << aux << "]] = R[" << aux2 << "] = R[0] = " << R_[0];
+	} else
 		cout << "\t\t Error en el direccionamiento";
 }
 
@@ -171,13 +187,17 @@ void RAM::ADD(string dir, string oper) {
 	int aux3 = atoi(R_[aux2].c_str());
 	int aux0 = atoi(R_[0].c_str());
 
-	if (dir == "")
+	cout << "\nADD  \t Suma al acumulador: \t";
+	if (dir == "") {
 		R_[0] = to_string(aux0 + aux2);
-	else if (dir == "=")
+		cout << "R[0] = R[0] + R[" << aux << "] = " << aux0 << " + " << aux2 << " = " << R_[0];
+	} else if (dir == "="){
 		R_[0] = to_string(aux0 + aux);
-	else if (dir == "*")
+		cout << "R[0] = R[0] + operador = " << aux0 << " + " << aux << " = " << R_[0];
+	} else if (dir == "*"){
 		R_[0] = to_string(aux0 + aux3);
-	else
+		cout << "R[0] = R[0] + R[R[" << aux << "]] = R[0] + R[" << aux2 << "] = " << aux0 << " + " << aux3 << " = " << R_[0];
+	} else
 		cout << "\t\t Error en el direccionamiento";
 }
 
@@ -191,6 +211,7 @@ void RAM::SUB(string dir, string oper) {
 	int aux3 = atoi(R_[aux2].c_str());
 	int aux0 = atoi(R_[0].c_str());
 
+	cout << "\nSUB  \t Resta al acumulador: \t";
 	if (dir == "")
 		R_[0] = to_string(aux0 - aux2);
 	else if (dir == "=")
@@ -211,6 +232,7 @@ void RAM::MULT(string dir, string oper) {
 	int aux3 = atoi(R_[aux2].c_str());
 	int aux0 = atoi(R_[0].c_str());
 
+	cout << "\nMULT \t Multiplica al acumulador: \t";
 	if (dir == "")
 		R_[0] = to_string(aux0 * aux2);
 	else if (dir == "=")
@@ -231,6 +253,7 @@ void RAM::DIV(string dir, string oper) {
 	int aux3 = atoi(R_[aux2].c_str());
 	int aux0 = atoi(R_[0].c_str());
 
+	cout << "\nDIV \t Divide al acumulador: \t";
 	if (dir == "")
 		R_[0] = to_string(aux0 / aux2);
 	else if (dir == "=")
@@ -246,11 +269,19 @@ void RAM::DIV(string dir, string oper) {
 //========================================================================================
 
 void RAM::READ(string dir, string oper, index i) {
-	if (dir == "")
-		R_[atoi(oper.c_str())] = get_CE(i);
-	else if (dir == "*")
-		R_[atoi(R_[atoi(oper.c_str())].c_str())] = get_CE(i);
-	else
+	int aux = atoi(oper.c_str());
+	int aux2 = atoi(R_[aux].c_str());
+
+	cout << "\nREAD \t Lee de la CE: \t\t";
+	if (dir == "") {
+		addR(aux);
+		R_[aux] = get_CE(i);
+		cout << "R[" << aux << "] = CE[" << i << "] = " << R_[aux];
+	} else if (dir == "*")  {
+		addR(aux2);
+		R_[aux2] = get_CE(i);
+		cout << "R[R[" << aux << "]] = R[" << aux2 << "] = CE[" << i << "] = " << R_[aux2];
+	} else
 		cout << "\t\t Error en el direccionamiento";
 }
 
@@ -259,6 +290,7 @@ void RAM::READ(string dir, string oper, index i) {
 //========================================================================================
 
 void RAM::WRITE(string dir, string oper) {
+	cout << "\nWRITE \t Escribe en la CS: \t";
 	if (dir == "")
 		set_CS(R_[atoi(oper.c_str())]);
 	else if (dir == "=")
@@ -276,6 +308,7 @@ void RAM::WRITE(string dir, string oper) {
 index RAM::JUMP(string tag, index i) {
 	int aux1 = atoi(tag.c_str());			// Línea de la etiqueta
 
+	cout << "\nJUMP \t Salto de l\241nea: \tL" << aux1;
 	return aux1;
 }
 
@@ -286,8 +319,11 @@ index RAM::JUMP(string tag, index i) {
 index RAM::JGTZ(string tag, index i) {
 	int aux0 = atoi(R_[0].c_str());			// Acumulador, int
 	int aux1 = atoi(tag.c_str());			// Línea de la etiqueta
+	int linea = (aux0 > 0) ? aux1 : (i + 1);
 
-	return (aux0 > 0) ? aux1 : (i + 1);
+	cout << "\nJGTZ \t Salto de l\241nea: \tL" << linea;
+
+	return linea;
 }
 
 //========================================================================================
@@ -297,8 +333,11 @@ index RAM::JGTZ(string tag, index i) {
 index RAM::JZERO(string tag, index i) {
 	int aux0 = atoi(R_[0].c_str());			// Acumulador, int
 	int aux1 = atoi(tag.c_str());			// Línea de la etiqueta
+	int linea = (aux0 == 0) ? aux1 : (i + 1);
 
-	return (aux0 == 0) ? aux1 : (i + 1);
+	cout << "\nJZERO \t Salto de l\241nea: \tL" << linea;
+
+	return linea;
 }
 
 //========================================================================================
@@ -307,6 +346,7 @@ index RAM::JZERO(string tag, index i) {
 
 void RAM::HALT() {
 
+	cout << "\nHALT \t FIN\n";
 
 }
 
@@ -314,7 +354,7 @@ void RAM::HALT() {
 // LLAMA A LA FUNCIÓN QUE CORRESPONDA POR LA LÍNEA i DE CÓDIGO P EN LA QUE ESTÉ
 //========================================================================================
 
-void RAM::ejecuta(index i, index j) {
+void RAM::ejecuta(index &i, index &j) {
 		// Separamos el opcode, el operando/etiqueta y direccionamiento
 	string opcode = get_P(i, 1);	// Opcode de la línea i
 	string oper = get_P(i, 2);		// Operando de la línea i
@@ -338,14 +378,24 @@ void RAM::ejecuta(index i, index j) {
 	else if (opcode == "4") SUB(dir, oper);
 	else if (opcode == "5") MULT(dir, oper);
 	else if (opcode == "6") DIV(dir, oper);
-	else if (opcode == "7") READ(dir, oper, j);
+	else if (opcode == "7") {READ(dir, oper, j); j++;}			// j++ para que en la próxima lea la sig.
 	else if (opcode == "8") WRITE(dir, oper);
-	else if (opcode == "9") JUMP(oper, i);
-	else if (opcode == "10") JGTZ(oper, i);
-	else if (opcode == "11") JZERO(oper, i);
+	else if (opcode == "9") i = JUMP(oper, i) - 1;
+	else if (opcode == "10") i = JGTZ(oper, i) - 1;
+	else if (opcode == "11") i = JZERO(oper, i) - 1;
 	else if (opcode == "12") HALT();
 	else HALT();			// No existe el código
+	i++;
+}
 
+//========================================================================================
+// COMPRUEBA SI EXISTE EL ÍNDICE I Y SINO LO AÑADE
+//========================================================================================
+
+void RAM::addR(index i) {
+	while (i >= get_R().size()) {
+		set_R("0");
+	}
 }
 
 // ************* CONSTRUCTORES
@@ -476,9 +526,15 @@ void RAM::set_R(index i, string item)
 void RAM::traza()
 {
 	int paso = 0;
-	for (int i = 1; i <= get_m(); i++) {	// Lee todas las instrucciones del código
-
+	index i = 1;
+	index j = 1;	// Índice inicial para la cinta de entrada
+	while ((get_P(i,1) != "12") && (i <= get_m())) {			// Mientras no encontremos una sentencia HALT o el final de P
+		ejecuta(i, j);
 	}
+
+	//for (int i = 1; i <= get_m(); i++) {	// Lee todas las instrucciones del código
+
+	//}
 }
 
 //========================================================================================
@@ -494,7 +550,7 @@ void RAM::traza()
 istream& RAM::read_P(istream& file)
 {
 	vector<string> vTag;						// Vector que almacenará las etiquetas
-	get_P().clear();
+	P_.clear();
 	set_n(2);									// En esta opción sólo se almacena el opcode y su operando
 
 	string line, tag, comm, instruc, oper;		// Cada línea, etiqueta, comentario, opcode, operando/etiqueta
@@ -562,7 +618,7 @@ istream& RAM::read_P(istream& file)
 
 istream& RAM::read_CE(istream& file)
 {
-	get_CE().clear();
+	CE_.clear();
 	string str;
 
 	while (file.good()) {
