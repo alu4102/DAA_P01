@@ -24,9 +24,10 @@ public:
 		// Cronstructores
 	RAM();
 	RAM(index, index);
+
 		// Métodos: Obtener y Establecer
-	vector<string> get_I();						/* Devuelve el vector que almacena el código del programa codificado. */
-	string get_I(index, index);					/* Devuelve el valor de la matriz I en la posición (i, j). */
+	vector<string> get_P();						/* Devuelve el vector que almacena el código del programa codificado. */
+	string get_P(index, index);					/* Devuelve el valor de la matriz I en la posición (i, j). */
 	index get_m();								/* Devuelve el nº de filas. */
 	index get_n();								/* Devuelve el nº de columnas. */
 	vector<string> get_CE();					/* Devuelve el vector que almacena la cinta de entrada. */
@@ -37,14 +38,17 @@ public:
 	void set_m(index);							/* Establece el valor del nº de filas. */
 	void set_n(index);							/* Establece el valor del nº de columnas. */
 	void set_P(index, index, string);			/* Establece el valor del programa de la posición (i, j) por el valor item. */
+	void set_P(string);							/* Establece al final del vector de la CE el valor item. */
 	void set_CE(index, string);					/* Establece el valor de la cinta de Entrada de la posición i por el valor item. */
 	void set_CE(string);						/* Establece al final del vector de la CE el valor item. */
 	void set_CS(index, string);					/* Establece el valor de la cinta de Salida de la posición i por el valor item. */
 	void set_CS(string);						/* Establece al final del vector de la CS el valor item. */
+
 		// Métodos: E/S por fichero/consola
 	istream& read_I(istream& in);				/* Lee el fichero del programa a cargar en la Máquina RAM */
 	void printCod();							/* Imprime la estructura codificada, que es tal como está la estructura. */
 	void printDesc();							/* Imprime la estructura descodificada. */
+
 		// Destructor
 	virtual ~RAM();
 };

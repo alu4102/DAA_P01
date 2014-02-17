@@ -160,7 +160,7 @@ n_(n)
 // OBTENER EL PROGRAMA A CARGAR EN LA MÁQUINA DE RAM
 //========================================================================================
 
-vector<string> RAM::get_I()
+vector<string> RAM::get_P()
 {
 	return P_;
 }
@@ -169,7 +169,7 @@ vector<string> RAM::get_I()
 // OBTENER EL VALOR DE LA POSICIÓN i,j DE LA MATRIZ I_ INDEXADO EN (1,1)
 //========================================================================================
 
-string RAM::get_I(index i, index j)
+string RAM::get_P(index i, index j)
 {
 	return P_[position(i, j)];
 }
@@ -267,6 +267,15 @@ void RAM::set_P(index i, index j, string item)
 }
 
 //========================================================================================
+// ESTABLECER EL VALOR EN LA ÚLTIMA POSICIÓN EN P (PROGRAMA QUE CARGAR LA MÁQUINA RAM)
+//========================================================================================
+
+void RAM::set_P(string item)
+{
+	P_.push_back(item);
+}
+
+//========================================================================================
 // ESTABLECER EL VALOR DE LA POSICIÓN i DEL VECTOR CE INDEXADO DESDE 1
 //========================================================================================
 
@@ -325,7 +334,7 @@ void RAM::set_CS(string item)
 istream& RAM::read_I(istream& file)
 {
 	vector<string> vTag;						// Vector que almacenará las etiquetas
-	get_I().clear();
+	get_P().clear();
 	set_n(2);									// En esta opción sólo se almacena el opcode y su operando
 
 	string line, tag, comm, instruc, oper;		// Cada línea, etiqueta, comentario, opcode, operando/etiqueta
@@ -368,8 +377,8 @@ istream& RAM::read_I(istream& file)
 			}
 			else
 				oper = "";											// Halt no tiene nada
-			P_.push_back(instruc);									// Se añade el opcode a la estructura
-			P_.push_back(oper);										// Se añade el operando/etiqueta a la estructura
+			set_P(instruc);											// Se añade el opcode a la estructura
+			set_P(oper);											// Se añade el operando/etiqueta a la estructura
 			nLine++;												// Se incrementa el nº de líneas con código, para identificar la etiqueta
 		}
 	}
@@ -379,7 +388,7 @@ istream& RAM::read_I(istream& file)
 
 	for (int i = 0; i < vTag.size() / 2; i++) {						// Se recorre el vector que almacena las etiquetas y su posición
 		for (int j = 1; j <= get_m(); j++) {							// Se recorre el vector que almacena el opcode y su operando/etiqueta
-			if (vTag[2 * i + 1] == get_I(j, 2))						// Si coincide el nombre de la etiqueta con el etiqueta del opcode
+			if (vTag[2 * i + 1] == get_P(j, 2))						// Si coincide el nombre de la etiqueta con el etiqueta del opcode
 				set_P(j, 2, vTag[2 * i]);							// Se cambia por el nº de línea
 		}
 	}
@@ -395,7 +404,7 @@ void RAM::printCod() {
 	cout << "\t OPCODE \t OPERANDO/ETIQUETA \n";
 	cout << "       *******************************\n";
 	for (int i = 1; i <= get_m(); i++) 
-		cout << "L" << i << "\t  " << get_I(i, 1) << "\t\t" << get_I(i, 2) << "\n";
+		cout << "L" << i << "\t  " << get_P(i, 1) << "\t\t" << get_P(i, 2) << "\n";
 }
 
 //========================================================================================
@@ -406,10 +415,10 @@ void RAM::printDesc() {
 	cout << "\t OPCODE \t OPERANDO/ETIQUETA \n";
 	cout << "       *******************************\n";
 	for (int i = 1; i <= get_m(); i++)
-		if ((get_I(i, 1) == "9") || (get_I(i, 1) == "10") || (get_I(i, 1) == "11"))
-			cout << "L" << i << "\t  " << desOpcode(get_I(i, 1)) << "\t\t\tL" << get_I(i, 2) << "\n";
+		if ((get_P(i, 1) == "9") || (get_P(i, 1) == "10") || (get_P(i, 1) == "11"))
+			cout << "L" << i << "\t  " << desOpcode(get_P(i, 1)) << "\t\t\tL" << get_P(i, 2) << "\n";
 		else
-			cout << "L" << i << "\t  " << desOpcode(get_I(i, 1)) << "\t\t\t" << get_I(i, 2) << "\n";
+			cout << "L" << i << "\t  " << desOpcode(get_P(i, 1)) << "\t\t\t" << get_P(i, 2) << "\n";
 }
 
 //========================================================================================
@@ -421,7 +430,7 @@ RAM::~RAM()
 	//I_.clear();
 	//CE_.clear();
 	//CS_.clear();
-	get_I().clear();
+	get_P().clear();
 	get_CE().clear();
 	get_CS().clear();
 	set_m(0);
