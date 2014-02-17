@@ -7,7 +7,7 @@ class RAM
 {
 private:
 		// Atributos
-	vector<string> I_;							/* Programa a cargar en la Máquina RAM */
+	vector<string> P_;							/* Programa a cargar en la Máquina RAM */
 	vector<string> CE_;							/* Cinta de Entrada */
 	vector<string> CS_;							/* Cinta de Salida */
 	index m_;									/* Número de filas. */
@@ -33,11 +33,14 @@ public:
 	string get_CE(index);						/* Devuelve el valor del vector CE en la posición (i, j). */
 	vector<string> get_CS();					/* Devuelve el vector que almacena la cinta de salida. */
 	string get_CS(index);						/* Devuelve el valor del vector CS en la posición (i, j). */
+
 	void set_m(index);							/* Establece el valor del nº de filas. */
 	void set_n(index);							/* Establece el valor del nº de columnas. */
-	void set_item(index, index, string);		/* Establece el valor de la matriz en la posición (i, j) por item. */
+	void set_P(index, index, string);			/* Establece el valor del programa de la posición (i, j) por el valor item. */
+	void set_CE(index, string);					/* Establece el valor de la cinta de Entrada de la posición i por el valor item. */
+	void set_CS(index, string);					/* Establece el valor de la cinta de Salida de la posición i por el valor item. */
 		// Métodos: E/S por fichero/consola
-	istream& readFile(istream& in);				/* Lee el fichero de la práctica y lo almacena en la matriz. */
+	istream& read_I(istream& in);				/* Lee el fichero del programa a cargar en la Máquina RAM */
 	void printCod();							/* Imprime la estructura codificada, que es tal como está la estructura. */
 	void printDesc();							/* Imprime la estructura descodificada. */
 		// Destructor

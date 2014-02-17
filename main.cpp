@@ -18,11 +18,13 @@ void menu(void)
 	RAM A;
 
 	string line;							// Se encargará de leer las líneas e imprimir el código original
-	string filename = "test2.ram";			// Nombre del archivo por defecto
-	ifstream in(filename.c_str());			// Entrada del fichero y establezco uno cargado estándar para añadir los datos a RAM desde los ficheros
+	string fileP = "test2.ram";				// Nombre del archivo por defecto del Programa a cargar en la Máquina RAM
+	string fileCE = "in2.ram";				// Nombre del archivo de la cinta de entrada por defecto
+	string fileCS = "out2.ram";				// Nombre del archivo de la cinta de salida
+	ifstream in(fileP.c_str());				// Entrada del fichero y establezco uno cargado estándar para añadir los datos a RAM desde los ficheros
 	if (in.is_open())
 	{
-		A.readFile(in);						// Carga en la matriz desde el fichero, los datos necesarios
+		A.read_I(in);						// Carga en la matriz desde el fichero, los datos necesarios
 		in.close();							// Se cierra el fichero
 		do // Empieza el Menú
 		{
@@ -45,11 +47,16 @@ void menu(void)
 			switch (opcion)
 			{
 			case 1: 
-					cout << "\n\n\t\t Escriba el nombre del archivo a leer: ";
-					cin >> filename;
-					in.open(filename.c_str(), ifstream::in);			// Se carga el nuevo archivo para analizar su código
+					cout << "\n\n\t\t Escriba los nombres de los archivos: \n";
+					cout << "\t\t Programa: \t\t";
+					cin >> fileP;
+					cout << "\t\t Cinta de Entrada: \t";
+					cin >> fileCE;
+					cout << "\t\t Cinta de Salida: \t";
+					cin >> fileCS;
+					in.open(fileP.c_str(), ifstream::in);			// Se carga el nuevo archivo para analizar su código
 					if (in.is_open()) {
-						A.readFile(in);
+						A.read_I(in);
 						in.close();
 						cout << "\n\n\t\t El archivo ha sido cargado con \202xito.";
 						cin.get();
@@ -61,7 +68,7 @@ void menu(void)
 			case 2: system("cls"); A.printCod(); cin.get(); break;		// Se imprime el código codificado
 			case 3:	system("cls"); A.printDesc(); cin.get(); break;		// Se imprime el código descodificado después de haber sido codificado
 			case 4:	system("cls"); 
-					in.open(filename.c_str(), ifstream::in);
+				in.open(fileP.c_str(), ifstream::in);
 					if (in.is_open()) {
 						while (getline(in, line)) {							// Se recorre el archivo línea a línea
 							cout << line << endl;							// Se imprime cada línea

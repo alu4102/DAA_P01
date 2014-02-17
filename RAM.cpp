@@ -3,7 +3,7 @@
 							// ************* MÉTODOS PRIVADOS
 
 //========================================================================================
-// DEVUELVE EL ÍNDICE DEL VECTOR CORRESPONDIENTE DE LA MATRIZ
+// DEVUELVE EL ÍNDICE DEL VECTOR CORRESPONDIENTE DE LA MATRIZ P, INDEXADO EN (1,1)
 //========================================================================================
 
 index RAM::position(index i, index j)
@@ -162,7 +162,7 @@ n_(n)
 
 vector<string> RAM::get_I()
 {
-	return I_;
+	return P_;
 }
 
 //========================================================================================
@@ -171,7 +171,7 @@ vector<string> RAM::get_I()
 
 string RAM::get_I(index i, index j)
 {
-	return I_[position(i, j)];
+	return P_[position(i, j)];
 }
 
 //========================================================================================
@@ -247,16 +247,34 @@ void RAM::set_n(index n)
 }
 
 //========================================================================================
-// ESTABLECER EL VALOR DE LA POSICIÓN i,j DE LA MATRIZ
+// ESTABLECER EL VALOR DE LA POSICIÓN i,j DE LA MATRIZ P
 //========================================================================================
 
-void RAM::set_item(index i, index j, string item)
+void RAM::set_P(index i, index j, string item)
 {
-	I_[position(i, j)] = item;
+	P_[position(i, j)] = item;
 }
 
 //========================================================================================
-// LECTURA DEL FICHERO DE UNA MATRIZ CUADRADA
+// ESTABLECER EL VALOR DE LA POSICIÓN i DEL VECTOR CE
+//========================================================================================
+
+void RAM::set_CE(index i, string item)
+{
+	CE_[i] = item;
+}
+
+//========================================================================================
+// ESTABLECER EL VALOR DE LA POSICIÓN i DEL VECTOR CS
+//========================================================================================
+
+void RAM::set_CS(index i, string item)
+{
+	CS_[i] = item;
+}
+
+//========================================================================================
+// LECTURA DEL FICHERO QUE CARGA EL PROGRAMA A CARGAR EN LA MÁQUINA RAM
 // ---------------------------------------------------------------------------------------
 // Aunque lo dejé preparado para guardar los comentarios, en principio no se almacenan
 // ya que no se pedía. Cuando se profundice en la práctica sabré si lo necesitaré o no.
@@ -265,10 +283,10 @@ void RAM::set_item(index i, index j, string item)
 // n será 2, 3 ó 4 depediendo las columnas a guardar.
 //========================================================================================
 
-istream& RAM::readFile(istream& file)
+istream& RAM::read_I(istream& file)
 {
-	vector<string> vTag;
-	I_.clear();
+	vector<string> vTag;						// Vector que almacenará las etiquetas
+	get_I().clear();
 	set_n(2);									// En esta opción sólo se almacena el opcode y su operando
 
 	string line, tag, comm, instruc, oper;		// Cada línea, etiqueta, comentario, opcode, operando/etiqueta
@@ -311,8 +329,8 @@ istream& RAM::readFile(istream& file)
 			}
 			else
 				oper = "";											// Halt no tiene nada
-			I_.push_back(instruc);									// Se añade el opcode a la estructura
-			I_.push_back(oper);										// Se añade el operando/etiqueta a la estructura
+			P_.push_back(instruc);									// Se añade el opcode a la estructura
+			P_.push_back(oper);										// Se añade el operando/etiqueta a la estructura
 			nLine++;												// Se incrementa el nº de líneas con código, para identificar la etiqueta
 		}
 	}
@@ -322,8 +340,8 @@ istream& RAM::readFile(istream& file)
 
 	for (int i = 0; i < vTag.size() / 2; i++) {						// Se recorre el vector que almacena las etiquetas y su posición
 		for (int j = 0; j < get_m(); j++) {							// Se recorre el vector que almacena el opcode y su operando/etiqueta
-			if (vTag[2 * i + 1] == get_I(j, 1))					// Si coincide el nombre de la etiqueta con el etiqueta del opcode
-				set_item(j, 1, vTag[2 * i]);						// Se cambia por el nº de línea
+			if (vTag[2 * i + 1] == get_I(j, 1))						// Si coincide el nombre de la etiqueta con el etiqueta del opcode
+				set_P(j, 1, vTag[2 * i]);							// Se cambia por el nº de línea
 		}
 	}
 
@@ -361,7 +379,14 @@ void RAM::printDesc() {
 
 RAM::~RAM()
 {
-	I_.clear();
+	//I_.clear();
+	//CE_.clear();
+	//CS_.clear();
+	get_I().clear();
+	get_CE().clear();
+	get_CS().clear();
+	set_m(0);
+	set_n(0);
 }
 
 
