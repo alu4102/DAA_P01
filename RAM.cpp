@@ -331,7 +331,7 @@ void RAM::set_CS(string item)
 // n será 2, 3 ó 4 depediendo las columnas a guardar.
 //========================================================================================
 
-istream& RAM::read_I(istream& file)
+istream& RAM::read_P(istream& file)
 {
 	vector<string> vTag;						// Vector que almacenará las etiquetas
 	get_P().clear();
@@ -397,10 +397,27 @@ istream& RAM::read_I(istream& file)
 }
 
 //========================================================================================
+// LECTURA POR FICHERO LA CINTA DE ENTRADA
+//========================================================================================
+
+istream& RAM::read_CE(istream& file)
+{
+	get_CE().clear();
+	string str;
+
+	while (file.good()) {
+		file >> str;
+		set_CE(str);
+	}
+
+	return file;
+}
+
+//========================================================================================
 // IMPRIME LA ESTRUCTURA, QUE SE GUARDA CODIFICADA
 //========================================================================================
 
-void RAM::printCod() {
+void RAM::print_P_Cod() {
 	cout << "\t OPCODE \t OPERANDO/ETIQUETA \n";
 	cout << "       *******************************\n";
 	for (int i = 1; i <= get_m(); i++) 
@@ -411,7 +428,7 @@ void RAM::printCod() {
 // IMPRIME LA ESTRUCTURA, QUE SE GUARDA CODIFICADA
 //========================================================================================
 
-void RAM::printDesc() {
+void RAM::print_P_Desc() {
 	cout << "\t OPCODE \t OPERANDO/ETIQUETA \n";
 	cout << "       *******************************\n";
 	for (int i = 1; i <= get_m(); i++)
@@ -422,14 +439,24 @@ void RAM::printDesc() {
 }
 
 //========================================================================================
+// IMPRIME LA ESTRUCTURA, QUE SE GUARDA CODIFICADA
+//========================================================================================
+
+void RAM::print_CE() {
+	cout << "\n\n\t\t   CINTA DE ENTRADA \n";
+	cout << "\t\t ENTRADA\tVALOR \n";
+	cout << "\t       ************************\n";
+	for (int i = 1; i <= get_CE().size(); i++)
+		cout << "\t\t Entrada" << i << "\t  " << get_CE(i) << "\n";
+}
+
+
+//========================================================================================
 // DESTRUCTOR
 //========================================================================================
 
 RAM::~RAM()
 {
-	//I_.clear();
-	//CE_.clear();
-	//CS_.clear();
 	get_P().clear();
 	get_CE().clear();
 	get_CS().clear();

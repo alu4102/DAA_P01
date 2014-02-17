@@ -45,9 +45,11 @@ public:
 	void set_CS(string);						/* Establece al final del vector de la CS el valor item. */
 
 		// Métodos: E/S por fichero/consola
-	istream& read_I(istream& in);				/* Lee el fichero del programa a cargar en la Máquina RAM */
-	void printCod();							/* Imprime la estructura codificada, que es tal como está la estructura. */
-	void printDesc();							/* Imprime la estructura descodificada. */
+	istream& read_P(istream& in);				/* Lee por fichero el programa a cargar en la Máquina RAM. */
+	istream& read_CE(istream& in);				/* Lee por fichero la cinta de entrada. */
+	void print_P_Cod();							/* Imprime la estructura codificada, que es tal como está la estructura. */
+	void print_P_Desc();						/* Imprime la estructura descodificada. */
+	void print_CE();							/* Imprime la cinta de entrada. */
 
 		// Destructor
 	virtual ~RAM();
