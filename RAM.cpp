@@ -127,8 +127,12 @@ void RAM::LOAD(string dir, string oper) {
 //========================================================================================
 
 void RAM::STORE(string dir, string oper) {
-
-
+	if (dir == "")
+		R_[atoi(oper.c_str())] = R_[0];
+	else if (dir == "*")
+		R_[atoi(R_[atoi(oper.c_str())].c_str())] = R_[0];
+	else
+		cout << "\t\t Error en el direccionamiento";
 }
 
 //========================================================================================
