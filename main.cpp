@@ -116,6 +116,11 @@ void menu(void)
 			case 'i':
 				A.print_CE();
 				cin.get(); break;
+				// VER CINTA DE ENTRADA
+			case 'o':
+				A.print_CS();
+				cin.get(); break;
+			// SALIR
 			case 'x': system("cls"); cout << "\n\n\t\t Esperemos verlo nuevamente... "; continue;
 			default: cout << "\n\n\n\t\t Opcion no valida. "; cin.get(); break;
 			} // Fin switch

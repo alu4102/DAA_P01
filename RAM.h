@@ -50,6 +50,7 @@ public:
 	void print_P_Cod();							/* Imprime la estructura codificada, que es tal como está la estructura. */
 	void print_P_Desc();						/* Imprime la estructura descodificada. */
 	void print_CE();							/* Imprime la cinta de entrada. */
+	void print_CS();							/* Imprime la cinta de entrada. */
 
 		// Destructor
 	virtual ~RAM();

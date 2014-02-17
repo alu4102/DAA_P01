@@ -439,15 +439,35 @@ void RAM::print_P_Desc() {
 }
 
 //========================================================================================
-// IMPRIME LA ESTRUCTURA, QUE SE GUARDA CODIFICADA
+// IMPRIME LA CINTA DE ENTRADA
 //========================================================================================
 
 void RAM::print_CE() {
 	cout << "\n\n\t\t   CINTA DE ENTRADA \n";
+	cout << "\t       ************************\n";
 	cout << "\t\t ENTRADA\tVALOR \n";
 	cout << "\t       ************************\n";
 	for (int i = 1; i <= get_CE().size(); i++)
 		cout << "\t\t Entrada" << i << "\t  " << get_CE(i) << "\n";
+
+	if (get_CE().size() == 0)
+		cout << "\t\t\t Salida Vacia" << endl;
+}
+
+//========================================================================================
+// IMPRIME LA CINTA DE SALIDA
+//========================================================================================
+
+void RAM::print_CS() {
+	cout << "\n\n\t\t   CINTA DE SALIDA \n";
+	cout << "\t       ************************\n";
+	cout << "\t\t SALIDA  \tVALOR \n";
+	cout << "\t       ************************\n";
+	for (int i = 1; i <= get_CS().size(); i++)
+		cout << "\t\t Salida" << i << "\t  " << get_CS(i) << "\n";
+
+	if (get_CS().size() == 0)
+		cout << "\t\t Cinta de Salida Vacia" << endl;
 }
 
 
