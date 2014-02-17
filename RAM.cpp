@@ -160,8 +160,19 @@ void RAM::ADD(string dir, string oper) {
 //========================================================================================
 
 void RAM::SUB(string dir, string oper) {
+	int aux = atoi(oper.c_str());
+	int aux2 = atoi(R_[aux].c_str());
+	int aux3 = atoi(R_[aux2].c_str());
+	int aux0 = atoi(R_[0].c_str());
 
-
+	if (dir == "")
+		R_[0] = to_string(aux0 - aux2);
+	else if (dir == "=")
+		R_[0] = to_string(aux0 - aux);
+	else if (dir == "*")
+		R_[0] = to_string(aux0 - aux3);
+	else
+		cout << "\t\t Error en el direccionamiento";
 }
 
 //========================================================================================
@@ -169,8 +180,19 @@ void RAM::SUB(string dir, string oper) {
 //========================================================================================
 
 void RAM::MULT(string dir, string oper) {
+	int aux = atoi(oper.c_str());
+	int aux2 = atoi(R_[aux].c_str());
+	int aux3 = atoi(R_[aux2].c_str());
+	int aux0 = atoi(R_[0].c_str());
 
-
+	if (dir == "")
+		R_[0] = to_string(aux0 * aux2);
+	else if (dir == "=")
+		R_[0] = to_string(aux0 * aux);
+	else if (dir == "*")
+		R_[0] = to_string(aux0 * aux3);
+	else
+		cout << "\t\t Error en el direccionamiento";
 }
 
 //========================================================================================
@@ -178,8 +200,19 @@ void RAM::MULT(string dir, string oper) {
 //========================================================================================
 
 void RAM::DIV(string dir, string oper) {
+	int aux = atoi(oper.c_str());
+	int aux2 = atoi(R_[aux].c_str());
+	int aux3 = atoi(R_[aux2].c_str());
+	int aux0 = atoi(R_[0].c_str());
 
-
+	if (dir == "")
+		R_[0] = to_string(aux0 / aux2);
+	else if (dir == "=")
+		R_[0] = to_string(aux0 / aux);
+	else if (dir == "*")
+		R_[0] = to_string(aux0 / aux3);
+	else
+		cout << "\t\t Error en el direccionamiento";
 }
 
 //========================================================================================
@@ -363,7 +396,7 @@ void RAM::set_CS(index i, string item)
 
 void RAM::set_R(index i, string item)
 {
-	if ((i<0) || (i>=CS_.size()))
+	if ((i<0) || (i>=R_.size()))
 	{
 		cerr << "Error en los índices del vector." << endl;
 	}
