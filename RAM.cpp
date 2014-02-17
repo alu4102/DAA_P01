@@ -8,13 +8,13 @@
 
 index RAM::position(index i, index j)
 {
-	if ((i<0) || (i>get_m()) || (j<0) || (j>get_n()))	// Verificamos que está dentro de los límites, para indexar en (1,1), i<1, j< 1, ....
+	if ((i<1) || (i>get_m()) || (j<1) || (j>get_n()))
 	{
 		cerr << "Error en los índices de la matriz." << endl;
 		return 0;
 	}
 
-	return i*get_n() + j;			// (i - 1)*get_n() + (j - 1) si lo queremos indexar desde (1,1) en vez (0,0)
+	return (i - 1)*get_n() + (j - 1);
 }
 
 //========================================================================================
@@ -166,7 +166,7 @@ vector<string> RAM::get_I()
 }
 
 //========================================================================================
-// OBTENER EL VALOR DE LA POSICIÓN i,j DE LA MATRIZ I_
+// OBTENER EL VALOR DE LA POSICIÓN i,j DE LA MATRIZ I_ INDEXADO EN (1,1)
 //========================================================================================
 
 string RAM::get_I(index i, index j)
@@ -202,12 +202,18 @@ vector<string> RAM::get_CE()
 }
 
 //========================================================================================
-// DEVUELVE LA POSICIÓN I DE LA CINTA DE ENTRADA
+// DEVUELVE LA POSICIÓN I DE LA CINTA DE ENTRADA INDEXADO EN 1
 //========================================================================================
 
 string RAM::get_CE(index i)
 {
-	return CE_[i];
+	if ((i<1) || (i>CE_.size()))
+	{
+		cerr << "Error en los índices del vector." << endl;
+		return 0;
+	}
+
+	return CE_[i - 1];
 }
 
 //========================================================================================
@@ -220,12 +226,17 @@ vector<string> RAM::get_CS()
 }
 
 //========================================================================================
-// DEVUELVE LA POSICIÓN I DE LA CINTA DE SALIDA
+// DEVUELVE LA POSICIÓN I DE LA CINTA DE SALIDA INDEXADO EN 1
 //========================================================================================
 
 string RAM::get_CS(index i)
 {
-	return CS_[i];
+	if ((i<1) || (i>CS_.size()))
+	{
+		cerr << "Error en los índices del vector." << endl;
+		return 0;
+	}
+	return CS_[i - 1];
 }
 
 //========================================================================================
@@ -256,21 +267,49 @@ void RAM::set_P(index i, index j, string item)
 }
 
 //========================================================================================
-// ESTABLECER EL VALOR DE LA POSICIÓN i DEL VECTOR CE
+// ESTABLECER EL VALOR DE LA POSICIÓN i DEL VECTOR CE INDEXADO DESDE 1
 //========================================================================================
 
 void RAM::set_CE(index i, string item)
 {
-	CE_[i] = item;
+	if ( (i<1) || (i>CE_.size()) )
+	{
+		cerr << "Error en los índices del vector." << endl;
+	}
+
+	CE_[i-1] = item;
 }
 
 //========================================================================================
-// ESTABLECER EL VALOR DE LA POSICIÓN i DEL VECTOR CS
+// ESTABLECER EL VALOR EN LA ÚLTIMA POSICIÓN EN LA CINTA DE ENTRADA
+//========================================================================================
+
+void RAM::set_CE(string item)
+{
+	CE_.push_back(item);
+}
+
+//========================================================================================
+// ESTABLECER EL VALOR DE LA POSICIÓN i DEL VECTOR CS INDEXADO DESDE 1
 //========================================================================================
 
 void RAM::set_CS(index i, string item)
 {
+	if ((i<1) || (i>CS_.size()))
+	{
+		cerr << "Error en los índices del vector." << endl;
+	}
+
 	CS_[i] = item;
+}
+
+//========================================================================================
+// ESTABLECER EL VALOR EN LA ÚLTIMA POSICIÓN DE LA CINTA DE SALIDA
+//========================================================================================
+
+void RAM::set_CS(string item)
+{
+	CS_.push_back(item);
 }
 
 //========================================================================================
@@ -339,9 +378,9 @@ istream& RAM::read_I(istream& file)
 																	// se me hace necesario incrementarlo dentro de éste, por lo que, al final me sobra uno
 
 	for (int i = 0; i < vTag.size() / 2; i++) {						// Se recorre el vector que almacena las etiquetas y su posición
-		for (int j = 0; j < get_m(); j++) {							// Se recorre el vector que almacena el opcode y su operando/etiqueta
-			if (vTag[2 * i + 1] == get_I(j, 1))						// Si coincide el nombre de la etiqueta con el etiqueta del opcode
-				set_P(j, 1, vTag[2 * i]);							// Se cambia por el nº de línea
+		for (int j = 1; j <= get_m(); j++) {							// Se recorre el vector que almacena el opcode y su operando/etiqueta
+			if (vTag[2 * i + 1] == get_I(j, 2))						// Si coincide el nombre de la etiqueta con el etiqueta del opcode
+				set_P(j, 2, vTag[2 * i]);							// Se cambia por el nº de línea
 		}
 	}
 
@@ -355,8 +394,8 @@ istream& RAM::read_I(istream& file)
 void RAM::printCod() {
 	cout << "\t OPCODE \t OPERANDO/ETIQUETA \n";
 	cout << "       *******************************\n";
-	for (int i = 0; i < get_m(); i++) 
-		cout << "L" << i + 1 << "\t  " << get_I(i, 0) << "\t\t" << get_I(i, 1) << "\n";
+	for (int i = 1; i <= get_m(); i++) 
+		cout << "L" << i << "\t  " << get_I(i, 1) << "\t\t" << get_I(i, 2) << "\n";
 }
 
 //========================================================================================
@@ -366,11 +405,11 @@ void RAM::printCod() {
 void RAM::printDesc() {
 	cout << "\t OPCODE \t OPERANDO/ETIQUETA \n";
 	cout << "       *******************************\n";
-	for (int i = 0; i < get_m(); i++)
-		if ((get_I(i, 0) == "9") || (get_I(i, 0) == "10") || (get_I(i, 0) == "11"))
-			cout << "L" << i + 1 << "\t  " << desOpcode(get_I(i, 0)) << "\t\t\tL" << get_I(i, 1) << "\n";
+	for (int i = 1; i <= get_m(); i++)
+		if ((get_I(i, 1) == "9") || (get_I(i, 1) == "10") || (get_I(i, 1) == "11"))
+			cout << "L" << i << "\t  " << desOpcode(get_I(i, 1)) << "\t\t\tL" << get_I(i, 2) << "\n";
 		else
-			cout << "L" << i + 1 << "\t  " << desOpcode(get_I(i, 0)) << "\t\t\t" << get_I(i, 1) << "\n";
+			cout << "L" << i << "\t  " << desOpcode(get_I(i, 1)) << "\t\t\t" << get_I(i, 2) << "\n";
 }
 
 //========================================================================================
