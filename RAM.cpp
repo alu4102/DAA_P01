@@ -1,6 +1,6 @@
 #include "RAM.h"
 
-							// ************* MÉTODOS PRIVADOS
+// ************* MÉTODOS PRIVADOS
 
 //========================================================================================
 // DEVUELVE EL ÍNDICE DEL VECTOR CORRESPONDIENTE DE LA MATRIZ P, INDEXADO EN (1,1)
@@ -27,7 +27,7 @@ string RAM::Trim(string::const_iterator i, string::const_iterator f)
 	string buff;
 
 	for (it = i; it != f; ++it)					// Recorre todo el string
-		if (*it != ' ') buff += *it;			// Sólo almacena en buff un caracter que no sea espacio en blanco
+	if (*it != ' ') buff += *it;			// Sólo almacena en buff un caracter que no sea espacio en blanco
 
 	return buff;
 }
@@ -60,7 +60,7 @@ string RAM::TrimSecond(string::const_iterator i, string::const_iterator f)
 	while (*i != ' ') i++;				// Recorre hasta que se encuentre el primer espacio
 	while (*i == ' ') i++;				// Recorre los espacios en blanco hasta encontrar un caracter
 	for (it = i; it != f; ++it)			// Recorre hasta el final
-		if (*it != ' ') buff += *it;	// Si no tiene espacio en blanco lo almacena en buff
+	if (*it != ' ') buff += *it;	// Si no tiene espacio en blanco lo almacena en buff
 
 	return buff;
 }
@@ -219,7 +219,7 @@ void RAM::DIV(string dir, string oper) {
 // EJECUTA EL OPCODE READ
 //========================================================================================
 
-void RAM::READ(string dir, string oper, int i) {
+void RAM::READ(string dir, string oper, index i) {
 	if (dir == "")
 		R_[atoi(oper.c_str())] = get_CE(i);
 	else if (dir == "*")
@@ -247,27 +247,32 @@ void RAM::WRITE(string dir, string oper) {
 // EJECUTA EL OPCODE JUMP
 //========================================================================================
 
-void RAM::JUMP(string tag) {
+index RAM::JUMP(string tag, index i) {
+	int aux1 = atoi(tag.c_str());			// Línea de la etiqueta
 
-
+	return aux1;
 }
 
 //========================================================================================
 // EJECUTA EL OPCODE JGTZ
 //========================================================================================
 
-void RAM::JGTZ(string tag) {
+index RAM::JGTZ(string tag, index i) {
+	int aux0 = atoi(R_[0].c_str());			// Acumulador, int
+	int aux1 = atoi(tag.c_str());			// Línea de la etiqueta
 
-
+	return (aux0 > 0) ? aux1 : (i + 1);
 }
 
 //========================================================================================
 // EJECUTA EL OPCODE JZERO
 //========================================================================================
 
-void RAM::JZERO(string tag) {
+index RAM::JZERO(string tag, index i) {
+	int aux0 = atoi(R_[0].c_str());			// Acumulador, int
+	int aux1 = atoi(tag.c_str());			// Línea de la etiqueta
 
-
+	return (aux0 == 0) ? aux1 : (i + 1);
 }
 
 //========================================================================================
@@ -303,16 +308,16 @@ string RAM::desOpcode(string str) {
 	return out;
 }
 
-							// ************* CONSTRUCTORES
+// ************* CONSTRUCTORES
 
 //========================================================================================
 // CONSTRUCTOR POR DEFECTO
 // El nº de columnas será 2 ó 3, 1ª almacena comando, 2ª operando o etiqueta, 3ª comentario
 //========================================================================================
 
-RAM::RAM():
-	m_(0),
-	n_(2)
+RAM::RAM() :
+m_(0),
+n_(2)
 {
 	R_.push_back("0");			// Creamos el acumulador
 }
@@ -327,7 +332,7 @@ n_(n)
 {
 }
 
-							// ************* MÉTODOS: GETs y SETs
+// ************* MÉTODOS: GETs y SETs
 
 //========================================================================================
 // DEVUELVE LA POSICIÓN I DE LA CINTA DE ENTRADA INDEXADO EN 1
@@ -364,7 +369,7 @@ string RAM::get_CS(index i)
 
 string RAM::get_R(index i)
 {
-	if ((i<0) || (i>=R_.size()))
+	if ((i<0) || (i >= R_.size()))
 	{
 		cerr << "Error en los índices del vector." << endl;
 		return 0;
@@ -378,12 +383,12 @@ string RAM::get_R(index i)
 
 void RAM::set_CE(index i, string item)
 {
-	if ( (i<1) || (i>CE_.size()) )
+	if ((i<1) || (i>CE_.size()))
 	{
 		cerr << "Error en los índices del vector." << endl;
 	}
 
-	CE_[i-1] = item;
+	CE_[i - 1] = item;
 }
 
 //========================================================================================
@@ -397,7 +402,7 @@ void RAM::set_CS(index i, string item)
 		cerr << "Error en los índices del vector." << endl;
 	}
 
-	CS_[i-1] = item;
+	CS_[i - 1] = item;
 }
 
 //========================================================================================
@@ -406,7 +411,7 @@ void RAM::set_CS(index i, string item)
 
 void RAM::set_R(index i, string item)
 {
-	if ((i<0) || (i>=R_.size()))
+	if ((i<0) || (i >= R_.size()))
 	{
 		cerr << "Error en los índices del vector." << endl;
 	}
@@ -415,9 +420,9 @@ void RAM::set_R(index i, string item)
 }
 
 
-							// ************* MÉTODOS PRIVADOS
+// ************* MÉTODOS PRIVADOS
 
-void RAM::traza() 
+void RAM::traza()
 {
 	int paso = 0;
 	for (int i = 1; i <= get_m(); i++) {	// Lee todas las instrucciones del código
@@ -488,7 +493,7 @@ istream& RAM::read_P(istream& file)
 	}
 
 	set_m(nLine - 1);												// Al querer sólo contar las líneas con código, y estar el tag primero que instrucc
-																	// se me hace necesario incrementarlo dentro de éste, por lo que, al final me sobra uno
+	// se me hace necesario incrementarlo dentro de éste, por lo que, al final me sobra uno
 
 	for (int i = 0; i < vTag.size() / 2; i++) {						// Se recorre el vector que almacena las etiquetas y su posición
 		for (int j = 1; j <= get_m(); j++) {							// Se recorre el vector que almacena el opcode y su operando/etiqueta
@@ -524,7 +529,7 @@ istream& RAM::read_CE(istream& file)
 void RAM::print_P_Cod() {
 	cout << "\t OPCODE \t OPERANDO/ETIQUETA \n";
 	cout << "       *******************************\n";
-	for (int i = 1; i <= get_m(); i++) 
+	for (int i = 1; i <= get_m(); i++)
 		cout << "L" << i << "\t  " << get_P(i, 1) << "\t\t" << get_P(i, 2) << "\n";
 }
 
@@ -536,10 +541,10 @@ void RAM::print_P_Desc() {
 	cout << "\t OPCODE \t OPERANDO/ETIQUETA \n";
 	cout << "       *******************************\n";
 	for (int i = 1; i <= get_m(); i++)
-		if ((get_P(i, 1) == "9") || (get_P(i, 1) == "10") || (get_P(i, 1) == "11"))
-			cout << "L" << i << "\t  " << desOpcode(get_P(i, 1)) << "\t\t\tL" << get_P(i, 2) << "\n";
-		else
-			cout << "L" << i << "\t  " << desOpcode(get_P(i, 1)) << "\t\t\t" << get_P(i, 2) << "\n";
+	if ((get_P(i, 1) == "9") || (get_P(i, 1) == "10") || (get_P(i, 1) == "11"))
+		cout << "L" << i << "\t  " << desOpcode(get_P(i, 1)) << "\t\t\tL" << get_P(i, 2) << "\n";
+	else
+		cout << "L" << i << "\t  " << desOpcode(get_P(i, 1)) << "\t\t\t" << get_P(i, 2) << "\n";
 }
 
 //========================================================================================
@@ -625,7 +630,3 @@ RAM::~RAM()
 	set_m(0);
 	set_n(0);
 }
-
-
-
-
