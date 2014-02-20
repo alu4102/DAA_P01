@@ -17,9 +17,9 @@ void menu(void)
 	RAM A;
 
 	string line;							// Se encargará de leer las líneas e imprimir el código original
-	string fileP = "test2.ram";				// Nombre del archivo por defecto del Programa a cargar en la Máquina RAM
-	string fileCE = "in2.ram";				// Nombre del archivo de la cinta de entrada por defecto
-	string fileCS = "out2.ram";				// Nombre del archivo de la cinta de salida
+	string fileP = "test4.ram";				// Nombre del archivo por defecto del Programa a cargar en la Máquina RAM
+	string fileCE = "in4.ram";				// Nombre del archivo de la cinta de entrada por defecto
+	string fileCS = "out4.ram";				// Nombre del archivo de la cinta de salida
 		// Ficheros Estándar
 	ifstream inP(fileP.c_str());			// Entrada del fichero del programa a cargar en la máquina de RAM
 	ifstream inCE(fileCE.c_str());			// Entrada del fichero de la cinta de entrada

@@ -1,6 +1,6 @@
 #include <stdio.h>		// Cabecera que contendrá el procedimiento sprintf
 #include <iostream>		// Cabecera que tendrá la E/S mediante flujo
-#include <cmath>		// Cabecera que contendrá las funcioens matemáticas
+#include <math.h>       /* pow */
 #include <fstream>		// Cabecera que tendrá la E/S por ficheros
 #include <string>		// Cabecera para manejar cadenas
 #include <dos.h>        // necesario para _argc y argv

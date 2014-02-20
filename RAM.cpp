@@ -188,25 +188,31 @@ bool RAM::ADD(string dir, string oper, Tcomment comment) {
 	int aux3 = atoi(R_[aux2].c_str());
 	int aux0 = atoi(R_[0].c_str());
 
-	bool error = true;
+	bool correcto = true;
 
-	if (comment) cout << "\n\tADD  \t";
-	if (dir == "") {
-		R_[0] = to_string(aux0 + aux2);
-		if (comment) cout << "R[0] = R[0] + R[" << aux << "] = " << aux0 << " + " << aux2 << " = " << R_[0];
-	} else if (dir == "="){
-		R_[0] = to_string(aux0 + aux);
-		if (comment) cout << "R[0] = R[0] + operador = " << aux0 << " + " << aux << " = " << R_[0];
-	} else if (dir == "*"){
-		R_[0] = to_string(aux0 + aux3);
-		if (comment) cout << "R[0] = R[0] + R[R[" << aux << "]] = R[0] + R[" << aux2 << "] = " << aux0 << " + " << aux3 << " = " << R_[0];
+	if (dir == "") R_[0] = to_string(aux0 + aux2);
+	else if (dir == "=") R_[0] = to_string(aux0 + aux);
+	else if (dir == "*") R_[0] = to_string(aux0 + aux3);
+
+	if (atoi(R_[0].c_str()) > positivo(8)) correcto = false;	// Si el nº es mayor que en complemento a 2 de 8 bits.
+	else {
+		if (comment) cout << "\n\tADD  \t";
+		if (dir == "") {
+			if (comment) cout << "R[0] = R[0] + R[" << aux << "] = " << aux0 << " + " << aux2 << " = " << R_[0];
+		}
+		else if (dir == "="){
+			if (comment) cout << "R[0] = R[0] + operador = " << aux0 << " + " << aux << " = " << R_[0];
+		}
+		else if (dir == "*"){
+			if (comment) cout << "R[0] = R[0] + R[R[" << aux << "]] = R[0] + R[" << aux2 << "] = " << aux0 << " + " << aux3 << " = " << R_[0];
+		}
 	}
 
-	return error;
+	return correcto;
 }
 
 //========================================================================================
-// EJECUTA EL OPCODE SUB, SI SUPERA EL Nº DE BITS LA RESTA DEVUELVE ERROR
+// EJECUTA EL OPCODE SUB, SI SUPERA EL Nº DE BITS LA RESTA DEVUELVE ERROR, COMPLEMENTO A 2 DE 8 BITS
 //========================================================================================
 
 bool RAM::SUB(string dir, string oper, Tcomment comment) {
@@ -217,21 +223,27 @@ bool RAM::SUB(string dir, string oper, Tcomment comment) {
 	int aux3 = atoi(R_[aux2].c_str());
 	int aux0 = atoi(R_[0].c_str());
 
-	bool error = true;
+	bool correcto = true;
 
-	if (comment) cout << "\n\tSUB  \t";
-	if (dir == "") {
-		R_[0] = to_string(aux0 - aux2);
-		if (comment) cout << "R[0] = R[0] - R[" << aux << "] = " << aux0 << " - " << aux2 << " = " << R_[0];
-	} else if (dir == "=") {
-		R_[0] = to_string(aux0 - aux);
-		if (comment) cout << "R[0] = R[0] - operador = " << aux0 << " - " << aux << " = " << R_[0];
-	} else if (dir == "*") {
-		R_[0] = to_string(aux0 - aux3);
-		if (comment) cout << "R[0] = R[0] - R[R[" << aux << "]] = R[0] - R[" << aux2 << "] = " << aux0 << " - " << aux3 << " = " << R_[0];
+	if (dir == "") R_[0] = to_string(aux0 - aux2);
+	else if (dir == "=") R_[0] = to_string(aux0 - aux);
+	else if (dir == "*") R_[0] = to_string(aux0 - aux3);
+
+	if (atoi(R_[0].c_str()) < -1 * negativo(8)) correcto = false;	// Si el nº es mayor que en complemento a 2 de 8 bits.
+	else {
+		if (comment) cout << "\n\tSUB  \t";
+		if (dir == "") {
+			if (comment) cout << "R[0] = R[0] - R[" << aux << "] = " << aux0 << " - " << aux2 << " = " << R_[0];
+		}
+		else if (dir == "="){
+			if (comment) cout << "R[0] = R[0] - operador = " << aux0 << " - " << aux << " = " << R_[0];
+		}
+		else if (dir == "*"){
+			if (comment) cout << "R[0] = R[0] - R[R[" << aux << "]] = R[0] - R[" << aux2 << "] = " << aux0 << " - " << aux3 << " = " << R_[0];
+		}
 	}
 
-	return error;
+	return correcto;
 }
 
 //========================================================================================
@@ -246,21 +258,27 @@ bool RAM::MULT(string dir, string oper, Tcomment comment) {
 	int aux3 = atoi(R_[aux2].c_str());
 	int aux0 = atoi(R_[0].c_str());
 
-	bool error = true;
+	bool correcto = true;
 
-	if (comment) cout << "\n\tMULT \t";
-	if (dir == "") {
-		R_[0] = to_string(aux0 * aux2);
-		if (comment) cout << "R[0] = R[0] * R[" << aux << "] = " << aux0 << " * " << aux2 << " = " << R_[0];
-	} else if (dir == "=") {
-		R_[0] = to_string(aux0 * aux);
-		if (comment) cout << "R[0] = R[0] * operador = " << aux0 << " * " << aux << " = " << R_[0];
-	} else if (dir == "*") {
-		R_[0] = to_string(aux0 * aux3);
-		if (comment) cout << "R[0] = R[0] * R[R[" << aux << "]] = R[0] * R[" << aux2 << "] = " << aux0 << " * " << aux3 << " = " << R_[0];
+	if (dir == "") R_[0] = to_string(aux0 * aux2);
+	else if (dir == "=") R_[0] = to_string(aux0 * aux);
+	else if (dir == "*") R_[0] = to_string(aux0 * aux3);
+
+	if (atoi(R_[0].c_str()) > positivo(8)) correcto = false;	// Si el nº es mayor que en complemento a 2 de 8 bits.
+	else {
+		if (comment) cout << "\n\tMULT  \t";
+		if (dir == "") {
+			if (comment) cout << "R[0] = R[0] * R[" << aux << "] = " << aux0 << " * " << aux2 << " = " << R_[0];
+		}
+		else if (dir == "="){
+			if (comment) cout << "R[0] = R[0] * operador = " << aux0 << " * " << aux << " = " << R_[0];
+		}
+		else if (dir == "*"){
+			if (comment) cout << "R[0] = R[0] * R[R[" << aux << "]] = R[0] * R[" << aux2 << "] = " << aux0 << " * " << aux3 << " = " << R_[0];
+		}
 	}
 
-	return error;
+	return correcto;
 }
 
 //========================================================================================
@@ -275,25 +293,27 @@ bool RAM::DIV(string dir, string oper, Tcomment comment) {
 	int aux3 = atoi(R_[aux2].c_str());
 	int aux0 = atoi(R_[0].c_str());
 
-	bool error = true;
+	bool correcto = true;
 
-	if (comment) cout << "\n\tDIV \t";
-	if ((dir == "") && (aux2 != 0)) {
-		R_[0] = to_string(aux0 / aux2);
-		if (comment) cout << "R[0] = R[0] / R[" << aux << "] = " << aux0 << " / " << aux2 << " = " << R_[0];
-	} else if ((dir == "=") && (aux != 0)) {
-		R_[0] = to_string(aux0 / aux);
-		if (comment) cout << "R[0] = R[0] / operador = " << aux0 << " / " << aux << " = " << R_[0];
-	} else if ((dir == "*") && (aux3 != 0)) {
-		R_[0] = to_string(aux0 / aux3);
-		if (comment) cout << "R[0] = R[0] / R[R[" << aux << "]] = R[0] / R[" << aux2 << "] = " << aux0 << " / " << aux3 << " = " << R_[0];
-	} else {
-		cout << "DIVISI\343N POR CERO.";
-		error = false;
-		error = HALT(comment, false);
+	if (dir == "") R_[0] = to_string(aux0 / aux2);
+	else if (dir == "=") R_[0] = to_string(aux0 / aux);
+	else if (dir == "*") R_[0] = to_string(aux0 / aux3);
+
+	if (aux2 != 0) correcto = false;	// Si el nº es mayor que en complemento a 2 de 8 bits.
+	else {
+		if (comment) cout << "\n\tDIV  \t";
+		if (dir == "") {
+			if (comment) cout << "R[0] = R[0] / R[" << aux << "] = " << aux0 << " / " << aux2 << " = " << R_[0];
+		}
+		else if (dir == "="){
+			if (comment) cout << "R[0] = R[0] / operador = " << aux0 << " / " << aux << " = " << R_[0];
+		}
+		else if (dir == "*"){
+			if (comment) cout << "R[0] = R[0] / R[R[" << aux << "]] = R[0] / R[" << aux2 << "] = " << aux0 << " / " << aux3 << " = " << R_[0];
+		}
 	}
 
-	return error;
+	return correcto;
 }
 
 //========================================================================================
@@ -382,10 +402,10 @@ index RAM::JZERO(string tag, index i, Tcomment comment) {
 // EJECUTA EL OPCODE HALT
 //========================================================================================
 
-bool RAM::HALT(Tcomment comment, bool error) {
+bool RAM::HALT(Tcomment comment, bool correcto) {
 
 	if (comment) cout << "\n\tHALT \tFIN\n";
-	return error;
+	return correcto;
 }
 
 //========================================================================================
@@ -420,25 +440,32 @@ bool RAM::ejecuta(index &i, index &j, Tcomment comment) {
 		oper = oper.substr(1, oper.size() - 1);
 	}
 	// Seguimos ejecutando salvo sea HALT
-	bool error = true;
+	bool correcto = true;				// Error por desbordamiento o división por 0
+	bool correcto2 = true;				// Error por opcode no válido
 
 	if (opcode == "1") LOAD(dir, oper, comment);
 	else if (opcode == "2") STORE(dir, oper, comment);
-	else if (opcode == "3") error = ADD(dir, oper, comment);
-	else if (opcode == "4") error = SUB(dir, oper, comment);
-	else if (opcode == "5") error = MULT(dir, oper, comment);
-	else if (opcode == "6") error = DIV(dir, oper, comment);
-	else if (opcode == "7") { READ(dir, oper, j, comment); j++; }			// j++ para que en la próxima lea la sig.
+	else if (opcode == "3") correcto = ADD(dir, oper, comment);
+	else if (opcode == "4") correcto = SUB(dir, oper, comment);
+	else if (opcode == "5") correcto = MULT(dir, oper, comment);
+	else if (opcode == "6") correcto = DIV(dir, oper, comment);
+	else if (opcode == "7") { READ(dir, oper, j, comment); j++; }	// j++ para que en la próxima lea la sig.
 	else if (opcode == "8") WRITE(dir, oper, comment);
 	else if (opcode == "9") i = JUMP(oper, i, comment) - 1;
 	else if (opcode == "10") i = JGTZ(oper, i, comment) - 1;
 	else if (opcode == "11") i = JZERO(oper, i, comment) - 1;
-	else if (opcode == "12") error = HALT(comment, true);		// Termina porque el código termina
-	else error = HALT(comment, false);			// No existe el código
+	else if (opcode == "12") correcto = HALT(comment, true);		// Termina porque el código termina
+	else correcto2 = HALT(comment, false);								// No existe el código
 	i++;
 
-	if (!error) cout << "\n\t FIN: Por la instrucci\242n: " << desOpcode(opcode) << " cuya posici\242n es: " << (i - 1);								// Si hay error pongo la instrucción
-	return error;
+	correcto = correcto && correcto2;
+
+	// Si hay error pongo la instrucción
+	if (!correcto)
+		if (!correcto2) cout << "\n\n\t FIN: Porque no existe la instrucci\242n de la posici\242n: " << (i - 1) << endl;
+		else cout << "\n\n\t FIN: Por la instrucci\242n: " << desOpcode(opcode) << " cuya posici\242n es: " << (i - 1) << endl;
+
+	return correcto;
 }
 
 // ************* CONSTRUCTORES
