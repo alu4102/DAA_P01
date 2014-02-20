@@ -17,9 +17,9 @@ void menu(void)
 	RAM A;
 
 	string line;							// Se encargará de leer las líneas e imprimir el código original
-	string fileP = "test4.ram";				// Nombre del archivo por defecto del Programa a cargar en la Máquina RAM
-	string fileCE = "in4.ram";				// Nombre del archivo de la cinta de entrada por defecto
-	string fileCS = "out4.ram";				// Nombre del archivo de la cinta de salida
+	string fileP = "test2.ram";				// Nombre del archivo por defecto del Programa a cargar en la Máquina RAM
+	string fileCE = "in2.ram";				// Nombre del archivo de la cinta de entrada por defecto
+	string fileCS = "out2.ram";				// Nombre del archivo de la cinta de salida
 		// Ficheros Estándar
 	ifstream inP(fileP.c_str());			// Entrada del fichero del programa a cargar en la máquina de RAM
 	ifstream inCE(fileCE.c_str());			// Entrada del fichero de la cinta de entrada
@@ -35,7 +35,7 @@ void menu(void)
 			cout << "\n\n";
 			cout << "                                MENU " << endl;
 			cout << "    ***************************************************************" << endl;
-			cout << "\t l) Cargar ficheros (por defecto test2.ram). " << endl;
+			cout << "\t l) Cargar ficheros (por defecto " << fileP << "). " << endl;
 			cout << "" << endl;
 			cout << "\t r) Ver los registros. " << endl;
 			cout << "\t i) Ver Cinta de Entrada. " << endl;
@@ -114,7 +114,6 @@ void menu(void)
 				break;
 			case 'g':													// GO
 				A.go();
-				cout << "\n\n\t\t La ejecuci\242n se ha realizado con  \202xito.";
 				break;
 			case 's':													// DESENSAMBLADOR
 				A.print_P_Desc();
@@ -152,10 +151,9 @@ void menu(void)
 		cout << "\n\n\t\t Error al leer fichero uno de los ficheros.";
 	}
 
-	ofstream outCS(fileCS.c_str());			// Salida del fichero de la cinta de salida, fileCS.c_str()
-	A.write_CS(outCS);
+	//cout << "\n\n\t\t Se est\240 descangando el contenido de la cinta de salida en el fichero " << fileCS;
+	ofstream outCS;
+	outCS.open(fileCS.c_str(), ofstream::out | ofstream::trunc);
+	(outCS) ? A.write_CS(outCS) : cout << "\n\n\t\t Error al leer escribir en el fichero.";;
 	outCS.close();
-
-	//cin.ignore();
-	//cin.get();
 }

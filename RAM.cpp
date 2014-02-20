@@ -177,7 +177,7 @@ void RAM::STORE(string dir, string oper, Tcomment comment) {
 }
 
 //========================================================================================
-// EJECUTA EL OPCODE ADD
+// EJECUTA EL OPCODE ADD, SI SUPERA EL Nº DE BITS LA SUMA DEVUELVE ERROR
 //========================================================================================
 
 bool RAM::ADD(string dir, string oper, Tcomment comment) {
@@ -187,6 +187,8 @@ bool RAM::ADD(string dir, string oper, Tcomment comment) {
 	addR(aux2);
 	int aux3 = atoi(R_[aux2].c_str());
 	int aux0 = atoi(R_[0].c_str());
+
+	bool error = true;
 
 	if (comment) cout << "\n\tADD  \t";
 	if (dir == "") {
@@ -200,11 +202,11 @@ bool RAM::ADD(string dir, string oper, Tcomment comment) {
 		if (comment) cout << "R[0] = R[0] + R[R[" << aux << "]] = R[0] + R[" << aux2 << "] = " << aux0 << " + " << aux3 << " = " << R_[0];
 	}
 
-	return true;
+	return error;
 }
 
 //========================================================================================
-// EJECUTA EL OPCODE SUB
+// EJECUTA EL OPCODE SUB, SI SUPERA EL Nº DE BITS LA RESTA DEVUELVE ERROR
 //========================================================================================
 
 bool RAM::SUB(string dir, string oper, Tcomment comment) {
@@ -214,6 +216,8 @@ bool RAM::SUB(string dir, string oper, Tcomment comment) {
 	addR(aux2);
 	int aux3 = atoi(R_[aux2].c_str());
 	int aux0 = atoi(R_[0].c_str());
+
+	bool error = true;
 
 	if (comment) cout << "\n\tSUB  \t";
 	if (dir == "") {
@@ -227,11 +231,11 @@ bool RAM::SUB(string dir, string oper, Tcomment comment) {
 		if (comment) cout << "R[0] = R[0] - R[R[" << aux << "]] = R[0] - R[" << aux2 << "] = " << aux0 << " - " << aux3 << " = " << R_[0];
 	}
 
-	return true;
+	return error;
 }
 
 //========================================================================================
-// EJECUTA EL OPCODE MULT
+// EJECUTA EL OPCODE MULT, SI SUPERA EL Nº DE BITS LA MULT DEVUELVE ERROR
 //========================================================================================
 
 bool RAM::MULT(string dir, string oper, Tcomment comment) {
@@ -241,6 +245,8 @@ bool RAM::MULT(string dir, string oper, Tcomment comment) {
 	addR(aux2);
 	int aux3 = atoi(R_[aux2].c_str());
 	int aux0 = atoi(R_[0].c_str());
+
+	bool error = true;
 
 	if (comment) cout << "\n\tMULT \t";
 	if (dir == "") {
@@ -254,11 +260,11 @@ bool RAM::MULT(string dir, string oper, Tcomment comment) {
 		if (comment) cout << "R[0] = R[0] * R[R[" << aux << "]] = R[0] * R[" << aux2 << "] = " << aux0 << " * " << aux3 << " = " << R_[0];
 	}
 
-	return true;
+	return error;
 }
 
 //========================================================================================
-// EJECUTA EL OPCODE DIV
+// EJECUTA EL OPCODE DIV, SI DIVIDE POR CERO DEVUELVE ERROR
 //========================================================================================
 
 bool RAM::DIV(string dir, string oper, Tcomment comment) {
@@ -269,7 +275,7 @@ bool RAM::DIV(string dir, string oper, Tcomment comment) {
 	int aux3 = atoi(R_[aux2].c_str());
 	int aux0 = atoi(R_[0].c_str());
 
-	bool sig = true;
+	bool error = true;
 
 	if (comment) cout << "\n\tDIV \t";
 	if ((dir == "") && (aux2 != 0)) {
@@ -283,10 +289,11 @@ bool RAM::DIV(string dir, string oper, Tcomment comment) {
 		if (comment) cout << "R[0] = R[0] / R[R[" << aux << "]] = R[0] / R[" << aux2 << "] = " << aux0 << " / " << aux3 << " = " << R_[0];
 	} else {
 		cout << "DIVISI\343N POR CERO.";
-		sig = HALT(comment);
+		error = false;
+		error = HALT(comment, false);
 	}
 
-	return sig;
+	return error;
 }
 
 //========================================================================================
@@ -375,10 +382,10 @@ index RAM::JZERO(string tag, index i, Tcomment comment) {
 // EJECUTA EL OPCODE HALT
 //========================================================================================
 
-bool RAM::HALT(Tcomment comment) {
+bool RAM::HALT(Tcomment comment, bool error) {
 
 	if (comment) cout << "\n\tHALT \tFIN\n";
-	return false;
+	return error;
 }
 
 //========================================================================================
@@ -413,25 +420,25 @@ bool RAM::ejecuta(index &i, index &j, Tcomment comment) {
 		oper = oper.substr(1, oper.size() - 1);
 	}
 	// Seguimos ejecutando salvo sea HALT
-	bool sig = true;
+	bool error = true;
 
 	if (opcode == "1") LOAD(dir, oper, comment);
 	else if (opcode == "2") STORE(dir, oper, comment);
-	else if (opcode == "3") sig = ADD(dir, oper, comment);
-	else if (opcode == "4") sig = SUB(dir, oper, comment);
-	else if (opcode == "5") sig = MULT(dir, oper, comment);
-	else if (opcode == "6") sig = DIV(dir, oper, comment);
+	else if (opcode == "3") error = ADD(dir, oper, comment);
+	else if (opcode == "4") error = SUB(dir, oper, comment);
+	else if (opcode == "5") error = MULT(dir, oper, comment);
+	else if (opcode == "6") error = DIV(dir, oper, comment);
 	else if (opcode == "7") { READ(dir, oper, j, comment); j++; }			// j++ para que en la próxima lea la sig.
 	else if (opcode == "8") WRITE(dir, oper, comment);
 	else if (opcode == "9") i = JUMP(oper, i, comment) - 1;
 	else if (opcode == "10") i = JGTZ(oper, i, comment) - 1;
 	else if (opcode == "11") i = JZERO(oper, i, comment) - 1;
-	else if (opcode == "12") sig = HALT(comment);		// Termina porque el código termina
-	else sig = HALT(comment);			// No existe el código
+	else if (opcode == "12") error = HALT(comment, true);		// Termina porque el código termina
+	else error = HALT(comment, false);			// No existe el código
 	i++;
 
-	if (!sig) cout << "\n\t FIN: Por la instrucci\242n: " << desOpcode(opcode) << " cuya posici\242n es: " << (i - 1);								// Si hay error pongo la instrucción
-	return sig;
+	if (!error) cout << "\n\t FIN: Por la instrucci\242n: " << desOpcode(opcode) << " cuya posici\242n es: " << (i - 1);								// Si hay error pongo la instrucción
+	return error;
 }
 
 // ************* CONSTRUCTORES
@@ -561,25 +568,28 @@ void RAM::set_R(index i, string item)
 
 void RAM::traza()
 {
-	bool sig = true;
+	bool error = true;
 	index i = 1;
 	index j = 1;	// Índice inicial para la cinta de entrada
 	cout << "\n\n\t\t TRAZA \n\n";
 	cout << "\tAcci\242n\tDescripci\242n \n";
 	cout << "\t******************************\n";
-	while ((sig) && (i <= get_m())) {			// Mientras no encontremos una sentencia HALT o el final de P
-		sig = ejecuta(i, j, CON);
+	while ((error) && (i <= get_m())) {			// Mientras no encontremos una sentencia HALT o el final de P
+		error = ejecuta(i, j, CON);
 	}
 }
 
 void RAM::go()
 {
-	bool sig = true;
+	cout << "\n\n\t\t GO \n\n";
+	cout << "\tSe est\240 realizando la ejecuci\242n....\n";
+	bool error = true;
 	index i = 1;
 	index j = 1;	// Índice inicial para la cinta de entrada
-	while ((sig) && (i <= get_m())) {			// Mientras no encontremos una sentencia HALT o el final de P
-		sig = ejecuta(i, j, SIN);
+	while ((error) && (i <= get_m())) {			// Mientras no encontremos una sentencia HALT o el final de P
+		error = ejecuta(i, j, SIN);
 	}
+	cout << "\n\n\tFIN de GO.\n";
 }
 
 //========================================================================================

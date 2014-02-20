@@ -37,7 +37,7 @@ private:
 	index JUMP(string tag, index i, Tcomment comment);
 	index JGTZ(string tag, index i, Tcomment comment);
 	index JZERO(string tag, index i, Tcomment comment);
-	bool HALT(Tcomment comment);
+	bool HALT(Tcomment comment, bool error);
 		// 
 	void addR(index);												/* Este método crea espacio, si se intenta acceder a un índice no creado*/
 	bool ejecuta(index &i, index &j, Tcomment comment);				/* Línea i de P, y registro j de R*/
