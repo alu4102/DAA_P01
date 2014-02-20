@@ -382,6 +382,16 @@ bool RAM::HALT(Tcomment comment) {
 }
 
 //========================================================================================
+// COMPRUEBA SI EXISTE EL ÍNDICE I Y SINO AÑADE EL ESPACIO HASTA ESE ÍNDICE
+//========================================================================================
+
+void RAM::addR(index i) {
+	while (i >= get_R().size()) {
+		set_R("0");
+	}
+}
+
+//========================================================================================
 // LLAMA A LA FUNCIÓN QUE CORRESPONDA POR LA LÍNEA i DE CÓDIGO P EN LA QUE ESTÉ
 //========================================================================================
 
@@ -422,16 +432,6 @@ bool RAM::ejecuta(index &i, index &j, Tcomment comment) {
 
 	if (!sig) cout << "\n\t FIN: Por la instrucci\242n: " << desOpcode(opcode) << " cuya posici\242n es: " << (i - 1);								// Si hay error pongo la instrucción
 	return sig;
-}
-
-//========================================================================================
-// COMPRUEBA SI EXISTE EL ÍNDICE I Y SINO LO AÑADE
-//========================================================================================
-
-void RAM::addR(index i) {
-	while (i >= get_R().size()) {
-		set_R("0");
-	}
 }
 
 // ************* CONSTRUCTORES
@@ -564,6 +564,9 @@ void RAM::traza()
 	bool sig = true;
 	index i = 1;
 	index j = 1;	// Índice inicial para la cinta de entrada
+	cout << "\n\n\t\t TRAZA \n\n";
+	cout << "\tAcci\242n\tDescripci\242n \n";
+	cout << "\t******************************\n";
 	while ((sig) && (i <= get_m())) {			// Mientras no encontremos una sentencia HALT o el final de P
 		sig = ejecuta(i, j, CON);
 	}
@@ -677,10 +680,8 @@ istream& RAM::read_CE(istream& file)
 
 ofstream& RAM::write_CS(ofstream& file)
 {
-	CS_.clear();
-
 	for (int i = 1; i <= get_CS().size(); i++)
-		cout << get_CS(i) << "\n";
+		file << get_CS(i) << "\n";
 
 	return file;
 }
@@ -690,10 +691,11 @@ ofstream& RAM::write_CS(ofstream& file)
 //========================================================================================
 
 void RAM::print_P_Cod() {
-	cout << "\t OPCODE \t OPERANDO/ETIQUETA \n";
-	cout << "       *******************************\n";
+	cout << "\n\t       PROGRAMA CODIFICADO \n\n";
+	cout << "\tL\326NEA\tOPCODE\tOPERANDO/ETIQUETA \n";
+	cout << "      *************************************\n";
 	for (int i = 1; i <= get_m(); i++)
-		cout << "L" << i << "\t  " << get_P(i, 1) << "\t\t" << get_P(i, 2) << "\n";
+		cout << "\tL" << i << "\t  " << get_P(i, 1) << "\t\t" << get_P(i, 2) << "\n";
 }
 
 //========================================================================================
@@ -701,13 +703,14 @@ void RAM::print_P_Cod() {
 //========================================================================================
 
 void RAM::print_P_Desc() {
-	cout << "\t OPCODE \t OPERANDO/ETIQUETA \n";
-	cout << "       *******************************\n";
+	cout << "\n\t\t DESENSAMBLADOR \n\n";
+	cout << "\tL\326NEA\tOPCODE\tOPERANDO/ETIQUETA \n";
+	cout << "      *************************************\n";
 	for (int i = 1; i <= get_m(); i++)
 	if ((get_P(i, 1) == "9") || (get_P(i, 1) == "10") || (get_P(i, 1) == "11"))
-		cout << "L" << i << "\t  " << desOpcode(get_P(i, 1)) << "\t\t\tL" << get_P(i, 2) << "\n";
+		cout << "\tL" << i << "\t  " << desOpcode(get_P(i, 1)) << "\t\tL" << get_P(i, 2) << "\n";
 	else
-		cout << "L" << i << "\t  " << desOpcode(get_P(i, 1)) << "\t\t\t" << get_P(i, 2) << "\n";
+		cout << "\tL" << i << "\t  " << desOpcode(get_P(i, 1)) << "\t\t" << get_P(i, 2) << "\n";
 }
 
 //========================================================================================

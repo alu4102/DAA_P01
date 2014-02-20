@@ -6,6 +6,7 @@
 #include <dos.h>        // necesario para _argc y argv
 #include <vector>		// Cabecera para manejar un vector
 # include <conio.h>
+#include <ctype.h>		// Cabecera que me dejará utilizar las funciones toupper y tolower
 #include "RAM.h"		// Clase RAM donde almacena el ensamblado y desamblado del código del programa RAM
 
 

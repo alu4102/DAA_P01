@@ -6,7 +6,6 @@ int main(int argc, char* argv[]) {
 
 	menu();
 
-	//cout << endl << "Presione <Enter>...";
 	cin.get();
 	return 0;
 }
@@ -18,13 +17,12 @@ void menu(void)
 	RAM A;
 
 	string line;							// Se encargará de leer las líneas e imprimir el código original
-	string fileP = "test2.ram";				// Nombre del archivo por defecto del Programa a cargar en la Máquina RAM
-	string fileCE = "in2.ram";				// Nombre del archivo de la cinta de entrada por defecto
-	string fileCS = "out2.ram";				// Nombre del archivo de la cinta de salida
+	string fileP = "test4.ram";				// Nombre del archivo por defecto del Programa a cargar en la Máquina RAM
+	string fileCE = "in4.ram";				// Nombre del archivo de la cinta de entrada por defecto
+	string fileCS = "out4.ram";				// Nombre del archivo de la cinta de salida
 		// Ficheros Estándar
 	ifstream inP(fileP.c_str());			// Entrada del fichero del programa a cargar en la máquina de RAM
 	ifstream inCE(fileCE.c_str());			// Entrada del fichero de la cinta de entrada
-	ofstream outCS(fileCS.c_str());			// Salida del fichero de la cinta de salida
 	if (inP.is_open() && inCE.is_open())
 	{
 		A.read_P(inP);						// Carga en la matriz desde el fichero, los datos necesarios
@@ -37,7 +35,7 @@ void menu(void)
 			cout << "\n\n";
 			cout << "                                MENU " << endl;
 			cout << "    ***************************************************************" << endl;
-			cout << "\t l) Cargar ficheros (por defecto está test2.ram). " << endl;
+			cout << "\t l) Cargar ficheros (por defecto test2.ram). " << endl;
 			cout << "" << endl;
 			cout << "\t r) Ver los registros. " << endl;
 			cout << "\t i) Ver Cinta de Entrada. " << endl;
@@ -55,11 +53,11 @@ void menu(void)
 			cout << "\t x) Salir. " << endl;
 			cout << "    ***************************************************************" << endl;
 			cout << "\t    Elige una opci\242n: ";
-			cin >> opcion;
-
+			opcion = getchar();
+			
 			system("cls");
 
-			switch (opcion)
+			switch (tolower(opcion))
 			{
 				// ****************************************
 				// CARGAR FICHEROS
@@ -73,36 +71,29 @@ void menu(void)
 				cin >> fileCS;
 				inP.open(fileP.c_str(), ifstream::in);			
 				inCE.open(fileCE.c_str(), ifstream::in);
-				outCS.open(fileP.c_str(), ofstream::out);
 				if (inP.is_open() && inCE.is_open()) {
 					A.read_P(inP);						// Carga en la matriz desde el fichero, los datos necesarios
 					inP.close();						// Se cierra el fichero
 					A.read_CE(inCE);					// Carga la cinta de entrada
 					inCE.close();
-					cout << "\n\n\t\t El archivo ha sido cargado con \202xito.";
-					cin.get();
+					cout << "\n\n\t\t Los archivos han sido cargado con \202xito.";
 				} else {
 					cout << "\n\n\t\t Error al leer alguno de los ficheros."; 
-					cin.get();
 				}
 				break;
-				// ****************************************
-				// VER REGISTRO
-			case 'r':
+			case 'r':													// VER REGISTRO
 				A.print_R();
-				cin.get(); break;
-				// VER CINTA DE ENTRADA
-			case 'i':
+				break;
+			case 'i':													// VER CINTA DE ENTRADA
 				A.print_CE();
-				cin.get(); break;
-				// VER CINTA DE ENTRADA
-			case 'o':
+				break;
+			case 'o':													// VER CINTA DE SALIDA
 				A.print_CS();
-				cin.get(); break;
-				// IMPRIMIR CÓDIGO CODIFICADO
-			case 'u':	A.print_P_Cod(); cin.get(); break;		// Se imprime el código codificado
-				// IMPRIMIR CÓDIGO ORIGINAL
-			case 'w':
+				break;
+			case 'u':	
+				A.print_P_Cod();										// IMPRIMIR CÓDIGO CODIFICADO
+				break;
+			case 'w':													// IMPRIMIR CÓDIGO ORIGINAL
 				inP.open(fileP.c_str(), ifstream::in);
 				if (inP.is_open()) {
 					while (getline(inP, line)) {						// Se recorre el archivo línea a línea
@@ -114,30 +105,21 @@ void menu(void)
 					cout << "\n\n\t\t Error al leer fichero uno de los ficheros.";
 					cin.get();
 				}
-				cin.get(); break;
-				// IMPRIME LOS CÓDIGOS DEL OPCODE CORRESPONDIENTE
-			case 'c':
+				break;
+			case 'c':													// IMPRIME LOS CÓDIGOS DEL OPCODE CORRESPONDIENTE
 				A.print_OPCODE();
-				cin.get(); break;
-				// ****************************************
-				// TRAZA
-			case 't':
-				cout << "\n\n\t\t TRAZA \n\n";
+				break;
+			case 't':													// TRAZA
 				A.traza();
-				cin.get(); break;
-				// GO
-			case 'g':
+				break;
+			case 'g':													// GO
 				A.go();
 				cout << "\n\n\t\t La ejecuci\242n se ha realizado con  \202xito.";
-				cin.get(); break;
-				// DESENSAMBLADOR
-			case 's':
-				cout << "\n\n\t\t DESENSAMBLADOR \n\n";
-				A.print_P_Desc(); cin.get(); break;	// Se imprime el código descodificado después de haber sido codificado
-				cin.get(); break;
-				// ****************************************
-				// AYUDA
-			case 'h':
+				break;
+			case 's':													// DESENSAMBLADOR
+				A.print_P_Desc();
+				break;
+			case 'h':													// AYUDA
 				cout << "\n\n\t\t AYUDA \n\n";
 				cout << "       ******************************************************\n";
 				cout << "\t Deber\241a primero:\n";
@@ -154,21 +136,26 @@ void menu(void)
 				cout << "\t O observar como quedar\241a al descodificarlo tras\n";
 				cout << "\t haberlo codificado con.\n";
 				cout << "\t el comando s.\n";
-				cin.get(); break;
-				// ****************************************
-				// SALIR
-			case 'x': system("cls"); cout << "\n\n\t\t Esperemos verlo nuevamente... "; continue;
-			default: cout << "\n\n\n\t\t Opci\242n no valida. "; cin.get(); break;
-			} // Fin switch
+				break;
+			case 'x':													// SALIR
+				system("cls"); cout << "\n\n\t\t Esperemos verlo nuevamente... "; continue;
+			default:													// OTRA OPCIÓN
+				cout << "\n\n\n\t\t Opci\242n no valida. "; cin.get(); break;
+			}															// FIN SWITCH
 			cout << endl << "\n\tPresione <Enter>...";
+			cin.ignore();
 			cin.get();
-		} while (opcion != 'x');
+		} while (opcion != 'x');										// FIN MENÚ
 	}
 	else	/* En caso de que alguno de los ficheros no pueda abrirse. */
 	{
 		cout << "\n\n\t\t Error al leer fichero uno de los ficheros.";
 	}
+
+	ofstream outCS(fileCS.c_str());			// Salida del fichero de la cinta de salida, fileCS.c_str()
 	A.write_CS(outCS);
 	outCS.close();
-	cin.get();
+
+	//cin.ignore();
+	//cin.get();
 }
